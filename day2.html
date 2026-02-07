@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 2 - Catch My Love 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Stars background */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .day-badge {
+            display: inline-block;
+            background: rgba(255, 105, 180, 0.2);
+            border: 2px solid #ff69b4;
+            color: #ffb3d9;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 105, 180, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(255, 105, 180, 0.6); }
+        }
+
+        h1 {
+            color: #ffb3d9;
+            font-size: 32px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+        }
+
+        .subtitle {
+            color: #d4a5b8;
+            font-size: 16px;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .stat-box {
+            background: rgba(255, 105, 180, 0.1);
+            border: 2px solid rgba(255, 105, 180, 0.3);
+            border-radius: 15px;
+            padding: 15px;
+            flex: 1;
+        }
+
+        .stat-label {
+            color: #d4a5b8;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            color: #ff69b4;
+            font-size: 28px;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+        }
+
+        .game-area {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            border: 2px solid rgba(255, 105, 180, 0.3);
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+
+        .basket {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 80px;
+            font-size: 60px;
+            cursor: grab;
+            user-select: none;
+            transition: transform 0.1s ease;
+            filter: drop-shadow(0 5px 10px rgba(255, 105, 180, 0.5));
+        }
+
+        .basket:active {
+            cursor: grabbing;
+            transform: translateX(-50%) scale(1.1);
+        }
+
+        .falling-item {
+            position: absolute;
+            font-size: 35px;
+            cursor: pointer;
+            user-select: none;
+            animation: fall linear;
+            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.3));
+        }
+
+        @keyframes fall {
+            from {
+                top: -50px;
+                transform: rotate(0deg);
+            }
+            to {
+                top: 100%;
+                transform: rotate(360deg);
+            }
+        }
+
+        .caught-animation {
+            animation: catchPop 0.5s ease;
+        }
+
+        @keyframes catchPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5); opacity: 1; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        .combo-display {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: #ffd700;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .combo-display.show {
+            opacity: 1;
+            animation: comboPulse 0.5s ease;
+        }
+
+        @keyframes comboPulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.2); }
+        }
+
+        .timer-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .timer-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff69b4, #ff1493);
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.8);
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            border-radius: 30px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 105, 180, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 25px rgba(255, 105, 180, 0.6);
+        }
+
+        .start-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Win overlay */
+        .win-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .win-overlay.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .win-content {
+            text-align: center;
+            padding: 40px;
+            max-width: 400px;
+            animation: slideUp 0.8s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .piece-reveal {
+            width: 200px;
+            height: 200px;
+            margin: 30px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(255, 105, 180, 0.6);
+            animation: pieceGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes pieceGlow {
+            0%, 100% { box-shadow: 0 0 40px rgba(255, 105, 180, 0.6); }
+            50% { box-shadow: 0 0 60px rgba(255, 105, 180, 0.9); }
+        }
+
+        .piece-reveal img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .win-title {
+            color: #ff69b4;
+            font-size: 36px;
+            margin-bottom: 20px;
+            animation: bounce 1s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .win-message {
+            color: #ffb3d9;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .see-you {
+            color: #d4a5b8;
+            font-size: 16px;
+            font-style: italic;
+            opacity: 0;
+            animation: fadeInDelayed 1s ease 2s forwards;
+        }
+
+        @keyframes fadeInDelayed {
+            to { opacity: 1; }
+        }
+
+        .progress {
+            margin-top: 20px;
+            color: #d4a5b8;
+            font-size: 14px;
+        }
+
+        /* Particle system */
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            font-size: 20px;
+            animation: particleFloat 3s ease-out forwards;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .hint {
+            color: #ff69b4;
+            font-size: 14px;
+            margin-top: 15px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Stars background -->
+    <script>
+        for (let i = 0; i < 50; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = (Math.random() * 3 + 1) + 'px';
+            star.style.height = star.style.width;
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            document.body.appendChild(star);
+        }
+    </script>
+
+    <div class="container">
+        <div class="day-badge">DAY 2 OF 7</div>
+        <h1>Catch My Love 💕</h1>
+        <p class="subtitle">Catch 20 hearts before time runs out!</p>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-label">HEARTS</div>
+                <div class="stat-value" id="score">0/20</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">COMBO</div>
+                <div class="stat-value" id="combo">x1</div>
+            </div>
+        </div>
+
+        <div class="timer-bar">
+            <div class="timer-fill" id="timerFill" style="width: 100%;"></div>
+        </div>
+
+        <div class="game-area" id="gameArea">
+            <div class="combo-display" id="comboDisplay"></div>
+            <div class="basket" id="basket">🧺</div>
+        </div>
+
+        <button class="start-btn" id="startBtn" onclick="startGame()">Start Game 💖</button>
+        <p class="hint">💡 Drag the basket to catch hearts! Avoid broken hearts!</p>
+        <div class="progress" id="progress">Pieces unlocked: <span id="pieceCount">0</span> / 6</div>
+    </div>
+
+    <!-- Win Overlay -->
+    <div class="win-overlay" id="winOverlay">
+        <div class="win-content">
+            <div class="win-title">Love Overflowing! 💕✨</div>
+            
+            <div class="piece-reveal">
+                <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400&h=400&fit=crop" 
+                     alt="Puzzle Piece 2" id="pieceImage">
+            </div>
+            
+            <p class="win-message">
+                "You caught every piece of my heart,<br>
+                just like you've captured my soul."
+            </p>
+            
+            <p class="win-message">
+                🧩 <strong>Piece 2/6 unlocked!</strong>
+            </p>
+            
+            <p class="see-you">Tomorrow brings another surprise... 💫</p>
+        </div>
+    </div>
+
+    <script>
+        const GAME_DURATION = 30; // 30 seconds
+        const TARGET_SCORE = 20;
+        const SPAWN_INTERVAL = 800; // ms
+        
+        let score = 0;
+        let combo = 1;
+        let gameActive = false;
+        let gameTime = GAME_DURATION;
+        let spawnTimer;
+        let countdownTimer;
+        let basketX = 0;
+        let isDragging = false;
+
+        const basket = document.getElementById('basket');
+        const gameArea = document.getElementById('gameArea');
+        const scoreDisplay = document.getElementById('score');
+        const comboDisplay = document.getElementById('combo');
+        const timerFill = document.getElementById('timerFill');
+        const startBtn = document.getElementById('startBtn');
+        const comboText = document.getElementById('comboDisplay');
+
+        // Touch and mouse events for basket
+        let startX = 0;
+        let currentX = 0;
+
+        basket.addEventListener('mousedown', startDrag);
+        basket.addEventListener('touchstart', startDrag);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('touchmove', drag);
+        document.addEventListener('mouseup', stopDrag);
+        document.addEventListener('touchend', stopDrag);
+
+        function startDrag(e) {
+            if (!gameActive) return;
+            isDragging = true;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            startX = clientX - basketX;
+        }
+
+        function drag(e) {
+            if (!isDragging || !gameActive) return;
+            e.preventDefault();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            currentX = clientX - startX;
+            
+            const gameRect = gameArea.getBoundingClientRect();
+            const basketWidth = basket.offsetWidth;
+            const maxX = gameRect.width - basketWidth;
+            
+            basketX = Math.max(0, Math.min(currentX, maxX));
+            basket.style.left = basketX + 'px';
+            basket.style.transform = 'translateX(0)';
+        }
+
+        function stopDrag() {
+            isDragging = false;
+        }
+
+        function startGame() {
+            score = 0;
+            combo = 1;
+            gameTime = GAME_DURATION;
+            gameActive = true;
+            
+            updateScore();
+            updateCombo();
+            
+            startBtn.disabled = true;
+            startBtn.textContent = 'Playing...';
+            
+            // Clear any existing items
+            document.querySelectorAll('.falling-item').forEach(item => item.remove());
+            
+            // Start spawning
+            spawnTimer = setInterval(spawnItem, SPAWN_INTERVAL);
+            
+            // Start countdown
+            countdownTimer = setInterval(updateTimer, 100);
+        }
+
+        function spawnItem() {
+            if (!gameActive) return;
+            
+            const item = document.createElement('div');
+            item.className = 'falling-item';
+            
+            // 80% hearts, 20% broken hearts
+            const isHeart = Math.random() > 0.2;
+            item.innerHTML = isHeart ? '💕' : '💔';
+            item.dataset.type = isHeart ? 'heart' : 'broken';
+            
+            const gameRect = gameArea.getBoundingClientRect();
+            item.style.left = Math.random() * (gameRect.width - 40) + 'px';
+            
+            const fallDuration = 3 + Math.random() * 2; // 3-5 seconds
+            item.style.animationDuration = fallDuration + 's';
+            
+            gameArea.appendChild(item);
+            
+            // Check collision
+            const checkCollision = setInterval(() => {
+                if (!gameActive || !item.parentNode) {
+                    clearInterval(checkCollision);
+                    return;
+                }
+                
+                const itemRect = item.getBoundingClientRect();
+                const basketRect = basket.getBoundingClientRect();
+                
+                if (
+                    itemRect.bottom >= basketRect.top &&
+                    itemRect.top <= basketRect.bottom &&
+                    itemRect.right >= basketRect.left &&
+                    itemRect.left <= basketRect.right
+                ) {
+                    clearInterval(checkCollision);
+                    catchItem(item);
+                }
+            }, 50);
+            
+            // Remove item after animation
+            setTimeout(() => {
+                if (item.parentNode) {
+                    item.remove();
+                    if (item.dataset.type === 'heart') {
+                        // Missed a heart, reset combo
+                        combo = 1;
+                        updateCombo();
+                    }
+                }
+            }, fallDuration * 1000);
+        }
+
+        function catchItem(item) {
+            const isHeart = item.dataset.type === 'heart';
+            
+            if (isHeart) {
+                score++;
+                combo++;
+                
+                // Show combo if > 2
+                if (combo > 2) {
+                    comboText.textContent = `COMBO x${combo}! 🔥`;
+                    comboText.classList.add('show');
+                    setTimeout(() => comboText.classList.remove('show'), 1000);
+                }
+                
+                createCatchParticles(item, '✨');
+            } else {
+                // Caught broken heart - lose combo
+                combo = 1;
+                score = Math.max(0, score - 2);
+                createCatchParticles(item, '💥');
+            }
+            
+            item.classList.add('caught-animation');
+            setTimeout(() => item.remove(), 500);
+            
+            updateScore();
+            updateCombo();
+            
+            if (score >= TARGET_SCORE) {
+                winGame();
+            }
+        }
+
+        function createCatchParticles(element, emoji) {
+            const rect = element.getBoundingClientRect();
+            
+            for (let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.innerHTML = emoji;
+                particle.style.left = rect.left + 'px';
+                particle.style.top = rect.top + 'px';
+                
+                const angle = (Math.PI * 2 * i) / 8;
+                const distance = 50 + Math.random() * 50;
+                particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+                particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+                
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 3000);
+            }
+        }
+
+        function updateScore() {
+            scoreDisplay.textContent = `${score}/${TARGET_SCORE}`;
+        }
+
+        function updateCombo() {
+            comboDisplay.textContent = `x${combo}`;
+        }
+
+        function updateTimer() {
+            gameTime -= 0.1;
+            const percentage = (gameTime / GAME_DURATION) * 100;
+            timerFill.style.width = percentage + '%';
+            
+            if (gameTime <= 0) {
+                gameOver();
+            }
+        }
+
+        function gameOver() {
+            gameActive = false;
+            clearInterval(spawnTimer);
+            clearInterval(countdownTimer);
+            
+            startBtn.disabled = false;
+            startBtn.textContent = 'Try Again 💔';
+            
+            // Remove all falling items
+            document.querySelectorAll('.falling-item').forEach(item => item.remove());
+        }
+
+        function winGame() {
+            gameActive = false;
+            clearInterval(spawnTimer);
+            clearInterval(countdownTimer);
+            
+            // Save progress
+            localStorage.setItem('piece2', 'true');
+            localStorage.setItem('day2_completed', 'true');
+            
+            // Show win overlay
+            setTimeout(() => {
+                document.getElementById('winOverlay').classList.add('show');
+                createCelebration();
+            }, 500);
+            
+            updateProgress();
+        }
+
+        function createCelebration() {
+            const interval = setInterval(() => {
+                for (let i = 0; i < 3; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'particle';
+                    confetti.innerHTML = ['❤️', '💕', '💖', '✨'][Math.floor(Math.random() * 4)];
+                    confetti.style.left = Math.random() * window.innerWidth + 'px';
+                    confetti.style.top = '0px';
+                    confetti.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+                    confetti.style.setProperty('--ty', window.innerHeight + 'px');
+                    
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3000);
+                }
+            }, 150);
+            
+            setTimeout(() => clearInterval(interval), 5000);
+        }
+
+        function updateProgress() {
+            let count = 0;
+            for (let i = 1; i <= 6; i++) {
+                if (localStorage.getItem(`piece${i}`) === 'true') {
+                    count++;
+                }
+            }
+            document.getElementById('pieceCount').textContent = count;
+        }
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
