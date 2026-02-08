@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 2 - The Perfect Proposal 💍</title>
+    <title>Day 3 - Sweet Moments 🍫</title>
     <style>
         * {
             margin: 0;
@@ -13,9 +13,7 @@
 
         body {
             font-family: 'Georgia', serif;
-            background: linear-gradient(135deg, #4a0e4e 0%, #81007f 25%, #c9184a 50%, #ff6b9d 75%, #ffc2d1 100%);
-            background-size: 400% 400%;
-            animation: romanticGradient 15s ease infinite;
+            background: linear-gradient(135deg, #3d2817 0%, #6b4423 50%, #8b5a3c 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -24,72 +22,25 @@
             position: relative;
         }
 
-        @keyframes romanticGradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .piece-reveal {
-            position: relative;
-        }
-
-        .piece-img {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0;
-            transform: scale(0.95);
-            transition: opacity 1.2s ease, transform 1.2s ease;
-        }
-
-        .piece-img.show {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        #scratchCanvas {
-            position: absolute;
-            inset: 0;
-            z-index: 5;
-            border-radius: 15px;
-            cursor: pointer;
-        }
-
-
-        /* Sparkle background */
-        .sparkle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: white;
-            border-radius: 50%;
-            animation: sparkle 3s infinite;
-        }
-
-        @keyframes sparkle {
-            0%, 100% { opacity: 0; transform: scale(0); }
-            50% { opacity: 1; transform: scale(1); }
-        }
-
-        /* Floating hearts background */
-        .floating-heart {
+        /* Floating chocolate particles */
+        .choco-float {
             position: absolute;
             font-size: 20px;
-            opacity: 0.3;
-            animation: floatUp 10s linear infinite;
+            opacity: 0.2;
+            animation: chocoFloat 20s infinite;
             pointer-events: none;
         }
 
-        @keyframes floatUp {
+        @keyframes chocoFloat {
             0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0.3;
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
             }
-            50% {
-                opacity: 0.5;
+            10% {
+                opacity: 0.2;
+            }
+            90% {
+                opacity: 0.2;
             }
             100% {
                 transform: translateY(-100vh) rotate(360deg);
@@ -108,9 +59,9 @@
 
         .day-badge {
             display: inline-block;
-            background: rgba(255, 215, 0, 0.2);
-            border: 2px solid #ffd700;
-            color: #fff8dc;
+            background: rgba(139, 69, 19, 0.3);
+            border: 2px solid #d2691e;
+            color: #ffdab9;
             padding: 8px 20px;
             border-radius: 20px;
             font-size: 14px;
@@ -120,183 +71,163 @@
         }
 
         @keyframes glow {
-            0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
-            50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
+            0%, 100% { box-shadow: 0 0 10px rgba(210, 105, 30, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(210, 105, 30, 0.6); }
         }
 
         h1 {
-            color: #fff8dc;
+            color: #ffdab9;
             font-size: 32px;
             margin-bottom: 15px;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            text-shadow: 0 0 20px rgba(210, 105, 30, 0.5);
         }
 
         .subtitle {
-            color: #f0e68c;
+            color: #deb887;
             font-size: 16px;
             margin-bottom: 20px;
             font-style: italic;
         }
 
-        .lives-container {
-            margin-bottom: 15px;
-            font-size: 32px;
-        }
-
-        .heart {
-            display: inline-block;
-            margin: 0 3px;
-            transition: all 0.3s ease;
-        }
-
-        .heart.lost {
-            animation: heartLost 0.5s ease;
-            opacity: 0.2;
-            filter: grayscale(1);
-        }
-
-        @keyframes heartLost {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.3) rotate(10deg); }
-            100% { transform: scale(0.7); }
-        }
-
-        .progress-text {
-            color: #f0e68c;
-            font-size: 18px;
+        .stats {
+            display: flex;
+            justify-content: space-around;
             margin-bottom: 20px;
-            min-height: 25px;
-            font-style: italic;
+            gap: 10px;
         }
 
-        .timer-display {
-            color: #ffd700;
-            font-size: 20px;
+        .stat-box {
+            background: rgba(139, 69, 19, 0.2);
+            border: 2px solid rgba(210, 105, 30, 0.4);
+            border-radius: 15px;
+            padding: 15px;
+            flex: 1;
+        }
+
+        .stat-label {
+            color: #deb887;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            color: #d2691e;
+            font-size: 28px;
             font-weight: bold;
-            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(210, 105, 30, 0.5);
+        }
+
+        .timer-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .timer-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #d2691e, #cd853f);
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgba(210, 105, 30, 0.8);
         }
 
         .game-area {
             position: relative;
             width: 100%;
-            height: 500px;
-            background: linear-gradient(180deg, rgba(255, 182, 193, 0.15) 0%, rgba(219, 112, 147, 0.1) 100%);
+            height: 450px;
+            background: rgba(0, 0, 0, 0.3);
             border-radius: 20px;
-            border: 2px solid rgba(255, 182, 193, 0.5);
+            border: 2px solid rgba(210, 105, 30, 0.4);
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(255, 105, 180, 0.3), inset 0 0 50px rgba(255, 192, 203, 0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             margin-bottom: 20px;
         }
 
-        .target {
+        .basket {
             position: absolute;
-            top: 20px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             width: 100px;
             height: 100px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            animation: targetPulse 2s ease-in-out infinite;
-            z-index: 50;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        .target.visible {
-            opacity: 1;
-        }
-
-        @keyframes targetPulse {
-            0%, 100% { transform: translateX(-50%) scale(1); }
-            50% { transform: translateX(-50%) scale(1.1); }
-        }
-
-        .finger {
-            font-size: 60px;
-            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
-        }
-
-        .target-ring {
-            font-size: 40px;
-            margin-top: -20px;
-            opacity: 0.3;
-        }
-
-        .obstacle {
-            position: absolute;
-            width: 75px;
-            height: 75px;
-            background: rgba(220, 38, 38, 0.2);
-            border: 3px solid #dc2626;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 38px;
-            box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
-            z-index: 10;
-            animation: obstaclePulse 2s ease-in-out infinite;
-        }
-
-        @keyframes obstaclePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .ring {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            font-size: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+            font-size: 70px;
             cursor: grab;
-            animation: ringSparkle 1.5s ease-in-out infinite;
-            z-index: 100;
             user-select: none;
+            transition: transform 0.1s ease;
+            filter: drop-shadow(0 5px 10px rgba(210, 105, 30, 0.5));
+            z-index: 50;
         }
 
-        .ring:active {
+        .basket:active {
             cursor: grabbing;
+            transform: translateX(-50%) scale(1.1);
         }
 
-        @keyframes ringSparkle {
-            0%, 100% { filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8)); }
-            50% { filter: drop-shadow(0 0 25px rgba(255, 215, 0, 1)); }
+        .falling-item {
+            position: absolute;
+            font-size: 40px;
+            cursor: pointer;
+            user-select: none;
+            animation: fall linear;
+            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.3));
+            z-index: 10;
         }
 
-        .ring.hit {
-            animation: ringHit 0.5s ease;
+        @keyframes fall {
+            from {
+                top: -60px;
+                transform: rotate(0deg);
+            }
+            to {
+                top: 105%;
+                transform: rotate(360deg);
+            }
         }
 
-        @keyframes ringHit {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            25% { transform: scale(0.8) rotate(-15deg); }
-            50% { transform: scale(1.2) rotate(15deg); filter: drop-shadow(0 0 20px rgba(220, 38, 38, 1)); }
-            75% { transform: scale(0.9) rotate(-10deg); }
+        .caught-animation {
+            animation: catchPop 0.5s ease forwards;
+        }
+
+        @keyframes catchPop {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 1; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        .score-popup {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffd700;
+            pointer-events: none;
+            animation: scorePopup 1s ease forwards;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+            z-index: 100;
+        }
+
+        @keyframes scorePopup {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-50px) scale(1.5); opacity: 0; }
         }
 
         .start-btn {
-            background: linear-gradient(135deg, #ffd700, #ffed4e);
-            color: #1a0a2e;
+            background: linear-gradient(135deg, #d2691e, #cd853f);
+            color: white;
             border: none;
             padding: 15px 50px;
             border-radius: 30px;
             font-size: 20px;
-            font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+            box-shadow: 0 5px 20px rgba(210, 105, 30, 0.4);
             transition: all 0.3s ease;
+            font-weight: bold;
         }
 
         .start-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 7px 25px rgba(255, 215, 0, 0.6);
+            box-shadow: 0 7px 25px rgba(210, 105, 30, 0.6);
         }
 
         .start-btn:disabled {
@@ -341,28 +272,89 @@
         }
 
         .piece-reveal {
-            width: 200px;
-            height: 200px;
+            width: 250px;
+            height: 250px;
             margin: 30px auto;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+            box-shadow: 0 0 40px rgba(210, 105, 30, 0.6);
             animation: pieceGlow 2s ease-in-out infinite;
+            position: relative;
         }
 
         @keyframes pieceGlow {
-            0%, 100% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.6); }
-            50% { box-shadow: 0 0 60px rgba(255, 215, 0, 0.9); }
+            0%, 100% { box-shadow: 0 0 40px rgba(210, 105, 30, 0.6); }
+            50% { box-shadow: 0 0 60px rgba(210, 105, 30, 0.9); }
         }
 
         .piece-reveal img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .piece-reveal img.hidden {
+            opacity: 0;
+        }
+
+        .piece-reveal img.fade-in {
+            animation: fadeInImage 1s ease forwards;
+        }
+
+        @keyframes fadeInImage {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Scratch card styles */
+        .scratch-card-container {
+            width: 250px;
+            height: 250px;
+            margin: 30px auto;
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 0 40px rgba(210, 105, 30, 0.6);
+            animation: pieceGlow 2s ease-in-out infinite;
+        }
+
+        .scratch-card-container.hidden {
+            display: none;
+        }
+
+        #scratchCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 15px;
+            cursor: grab;
+            z-index: 2;
+        }
+
+        #scratchCanvas:active {
+            cursor: grabbing;
+        }
+
+        .scratch-instruction {
+            color: #ffdab9;
+            font-size: 16px;
+            margin-top: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .scratch-instruction.hidden {
+            display: none;
         }
 
         .win-title {
-            color: #ffd700;
+            color: #d2691e;
             font-size: 36px;
             margin-bottom: 20px;
             animation: bounce 1s ease;
@@ -374,14 +366,14 @@
         }
 
         .win-message {
-            color: #fff8dc;
+            color: #ffdab9;
             font-size: 18px;
             line-height: 1.6;
             margin-bottom: 30px;
         }
 
         .see-you {
-            color: #f0e68c;
+            color: #deb887;
             font-size: 16px;
             font-style: italic;
             opacity: 0;
@@ -394,14 +386,8 @@
 
         .progress {
             margin-top: 20px;
-            color: #f0e68c;
+            color: #deb887;
             font-size: 14px;
-        }
-
-        .hint {
-            color: #ffd700;
-            font-size: 14px;
-            margin-top: 15px;
         }
 
         .particle {
@@ -409,6 +395,7 @@
             pointer-events: none;
             font-size: 20px;
             animation: particleFloat 3s ease-out forwards;
+            z-index: 200;
         }
 
         @keyframes particleFloat {
@@ -422,505 +409,339 @@
             }
         }
 
-        .instruction-overlay {
+        .hint {
+            color: #d2691e;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .combo-display {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 200;
-            color: white;
-            padding: 20px;
-        }
-
-        .instruction-title {
-            font-size: 24px;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 28px;
             color: #ffd700;
-            margin-bottom: 20px;
-        }
-
-        .instruction-text {
-            font-size: 16px;
-            line-height: 1.8;
-            max-width: 300px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .got-it-btn {
-            background: linear-gradient(135deg, #ffd700, #ffed4e);
-            color: #1a0a2e;
-            border: none;
-            padding: 12px 40px;
-            border-radius: 25px;
-            font-size: 18px;
             font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 100;
         }
 
-        .got-it-btn:hover {
-            transform: translateY(-2px);
+        .combo-display.show {
+            opacity: 1;
+            animation: comboPulse 0.5s ease;
         }
 
-        .progress-bar-container {
-            width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            margin-bottom: 15px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #ffd700, #ffed4e);
-            width: 0%;
-            transition: width 0.3s ease;
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        @keyframes comboPulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.3); }
         }
     </style>
 </head>
 <body>
-    <!-- Sparkle background -->
+    <!-- Floating chocolates background -->
     <script>
-        // Add sparkles
-        for (let i = 0; i < 30; i++) {
-            const sparkle = document.createElement('div');
-            sparkle.className = 'sparkle';
-            sparkle.style.left = Math.random() * 100 + '%';
-            sparkle.style.top = Math.random() * 100 + '%';
-            sparkle.style.animationDelay = Math.random() * 3 + 's';
-            document.body.appendChild(sparkle);
-        }
-        
-        // Add floating hearts
-        const heartSymbols = ['💕', '💖', '💗', '💓', '💝', '💞'];
-        for (let i = 0; i < 15; i++) {
-            const heart = document.createElement('div');
-            heart.className = 'floating-heart';
-            heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
-            heart.style.left = Math.random() * 100 + '%';
-            heart.style.bottom = Math.random() * -50 + '%';
-            heart.style.animationDelay = Math.random() * 5 + 's';
-            heart.style.animationDuration = (8 + Math.random() * 4) + 's';
-            document.body.appendChild(heart);
+        const chocoTypes = ['🍫', '🍬', '🍭', '🧁'];
+        for (let i = 0; i < 12; i++) {
+            const choco = document.createElement('div');
+            choco.className = 'choco-float';
+            choco.innerHTML = chocoTypes[Math.floor(Math.random() * chocoTypes.length)];
+            choco.style.left = Math.random() * 100 + '%';
+            choco.style.animationDelay = Math.random() * 20 + 's';
+            choco.style.animationDuration = (15 + Math.random() * 10) + 's';
+            document.body.appendChild(choco);
         }
     </script>
 
     <div class="container">
-        <div class="day-badge">DAY 2 OF 7 - PROPOSE DAY</div>
-        <h1>The Perfect Proposal 💍</h1>
-        <p class="subtitle">Navigate through doubts and reach your forever! 💕</p>
+        <div class="day-badge">DAY 3 OF 7 - CHOCOLATE DAY</div>
+        <h1>Sweet Moments 🍫</h1>
+        <p class="subtitle">Catch the chocolates, avoid the veggies!</p>
         
-        <div class="lives-container" id="livesContainer">
-            <span class="heart" id="heart1">❤️</span>
-            <span class="heart" id="heart2">❤️</span>
-            <span class="heart" id="heart3">❤️</span>
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-label">CHOCOLATES</div>
+                <div class="stat-value" id="score">0/30</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">COMBO</div>
+                <div class="stat-value" id="combo">x1</div>
+            </div>
         </div>
 
-        <div class="timer-display" id="timerDisplay">Time: 0s / 60s</div>
-
-        <div class="progress-bar-container">
-            <div class="progress-bar" id="progressBar"></div>
+        <div class="timer-bar">
+            <div class="timer-fill" id="timerFill" style="width: 100%;"></div>
         </div>
-
-        <p class="progress-text" id="progressText">Press Start to begin your journey...</p>
 
         <div class="game-area" id="gameArea">
-            <!-- Instruction overlay -->
-            <div class="instruction-overlay" id="instructionOverlay">
-                <div class="instruction-title">How to Play 💍</div>
-                <div class="instruction-text">
-                    📱 <strong>Tilt your phone</strong> left/right<br>
-                    or<br>
-                    🖱️ <strong>Drag the ring</strong> with mouse<br>
-                    or<br>
-                    ⌨️ <strong>Arrow keys</strong> (← →)<br><br>
-                    💔 Avoid falling obstacles<br>
-                    ⏱️ Survive for 60 seconds<br>
-                    👆💍 Reach her finger at the top!
-                </div>
-                <button class="got-it-btn" onclick="hideInstructions()">Got it! Let's Go! 💕</button>
-            </div>
-
-            <div class="target" id="target">
-                <div class="finger">👆</div>
-                <div class="target-ring">💍</div>
-            </div>
+            <div class="combo-display" id="comboDisplay"></div>
+            <div class="basket" id="basket">🧺</div>
         </div>
 
-        <button class="start-btn" id="startBtn" onclick="startGame()">Start Game 💕</button>
-        <p class="hint">💡 True love conquers all - survive 60 seconds of doubts!</p>
+        <button class="start-btn" id="startBtn" onclick="startGame()">Start Game 🍫</button>
+        <p class="hint">💡 Drag basket to catch chocolates! Avoid veggies!</p>
         <div class="progress" id="progress">Pieces unlocked: <span id="pieceCount">0</span> / 6</div>
     </div>
 
     <!-- Win Overlay -->
     <div class="win-overlay" id="winOverlay">
         <div class="win-content">
-            <div class="win-title">She Said YES! 💍✨</div>
+            <div class="win-title">Sweet Success! 🍫✨</div>
             
-            <div class="piece-reveal" id="scratchContainer">
-                <canvas id="scratchCanvas"></canvas>
-
-                <img src="pieces/piece2.1.png" class="piece-img show" id="pieceCartoon2">
-                <img src="pieces/piece2.2.png" class="piece-img" id="pieceReal2">
+            <!-- Scratch card container -->
+            <div class="scratch-card-container" id="scratchContainer">
+                <img src="piece3.1.jpg" alt="Hidden Image" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
+                <canvas id="scratchCanvas" width="250" height="250"></canvas>
             </div>
-
             
-            <p class="win-message">
-                "Through all obstacles and doubts,<br>
-                our love found its way.<br>
-                Will you be mine forever?"
+            <p class="scratch-instruction" id="scratchInstruction">
+                ✨ Scratch to reveal your surprise! ✨
             </p>
             
-            <p class="win-message">
-                🧩 <strong>Piece 2/6 unlocked!</strong>
+            <!-- Image reveal container (hidden initially) -->
+            <div class="piece-reveal" id="pieceReveal" style="display: none;">
+                <img src="pieces/piece3.1.png" alt="Puzzle Piece 3 - Cartoon" id="cartoonImage" class="fade-in">
+                <img src="pieces/piece3.2.jpg" alt="Puzzle Piece 3 - Real" id="realImage" class="hidden">
+            </div>
+            
+            <p class="win-message" id="winMessage" style="display: none;">
+                "Life with you is sweeter than<br>
+                the finest chocolate.<br>
+                Every moment is a treat."
             </p>
             
-            <p class="see-you">Tomorrow brings something sweet... 🍫</p>
+            <p class="win-message" id="pieceUnlocked" style="display: none;">
+                🧩 <strong>Piece 3/6 unlocked!</strong>
+            </p>
+            
+            <p class="see-you" id="seeYou" style="display: none;">Tomorrow, something cuddly awaits... 🧸</p>
         </div>
     </div>
 
     <script>
-        // ===== DIFFICULTY SETTINGS - ADJUST THESE =====
-        const MAX_LIVES = 3; // Start with 3 hearts (was 5) - HARDER
-        const RING_SPEED = 0.8; // pixels per frame (upward movement)
-        const OBSTACLE_FALL_SPEED = 3.2; // Base fall speed (was 2.5) - FASTER
-        const GAME_HEIGHT = 500;
-        const GAME_DURATION = 60; // seconds
-        const KEYBOARD_SPEED = 4; // Movement speed (was 5) - SLOWER CONTROL
-        const OBSTACLE_SPAWN_INTERVAL = 900; // Spawn more frequently (was 1200ms) - MORE OBSTACLES
-        const DIFFICULTY_INCREASE_INTERVAL = 8; // Increase difficulty every 8s (was 10s) - FASTER RAMP
-        const OBSTACLE_SIZE = 75; // Larger obstacles (was 70) - HARDER TO DODGE
-        // ===============================================
-
-        let lives = MAX_LIVES;
+        const GAME_DURATION = 45; // Increased to 45 seconds
+        const TARGET_SCORE = 30; // Increased from 25 to 30
+        const SPAWN_INTERVAL = 550; // Decreased from 700ms to spawn faster
+        
+        // Chocolate types (good to catch)
+        const chocolates = ['🍫', '🍬', '🍭', '🧁', '🍰', '🎂', '🍪', '🍩'];
+        // Veggies (bad to catch) - increased variety
+        const veggies = ['🥦', '🥬', '🥒', '🌽', '🥕', '🍅'];
+        
+        let score = 0;
+        let combo = 1;
         let gameActive = false;
-        let ringY = GAME_HEIGHT - 80;
-        let ringX = 0;
-        let obstacles = [];
-        let animationFrame;
-        let isMouseDragging = false;
-        let lastCollisionTime = 0;
-        let gameStartTime = 0;
-        let elapsedTime = 0;
-        let obstacleSpawnTimer = null;
-        let difficultyMultiplier = 1;
-        const COLLISION_COOLDOWN = 1000; // 1 second cooldown between collisions
+        let gameTime = GAME_DURATION;
+        let spawnTimer;
+        let countdownTimer;
+        let basketX = 0;
+        let isDragging = false;
 
+        const basket = document.getElementById('basket');
         const gameArea = document.getElementById('gameArea');
+        const scoreDisplay = document.getElementById('score');
+        const comboDisplay = document.getElementById('combo');
+        const timerFill = document.getElementById('timerFill');
         const startBtn = document.getElementById('startBtn');
-        const progressText = document.getElementById('progressText');
-        const instructionOverlay = document.getElementById('instructionOverlay');
-        const timerDisplay = document.getElementById('timerDisplay');
-        const progressBar = document.getElementById('progressBar');
-        const target = document.getElementById('target');
+        const comboText = document.getElementById('comboDisplay');
 
-        let ring = null;
-        let gameRect = null;
-        let keysPressed = {};
+        // Scratch card variables
+        let scratchCanvas;
+        let scratchCtx;
+        let isScratching = false;
+        let scratchPercentage = 0;
 
-        // Device orientation for tilt controls
-        if (window.DeviceOrientationEvent) {
-            window.addEventListener('deviceorientation', handleOrientation);
+        // Touch and mouse events for basket
+        let startX = 0;
+        let currentX = 0;
+
+        basket.addEventListener('mousedown', startDrag);
+        basket.addEventListener('touchstart', startDrag);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('touchmove', drag);
+        document.addEventListener('mouseup', stopDrag);
+        document.addEventListener('touchend', stopDrag);
+
+        function startDrag(e) {
+            if (!gameActive) return;
+            isDragging = true;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            startX = clientX - basketX;
         }
 
-        // Keyboard controls
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-                e.preventDefault();
-                keysPressed[e.key] = true;
-            }
-        });
-
-        window.addEventListener('keyup', (e) => {
-            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-                keysPressed[e.key] = false;
-            }
-        });
-
-        function handleOrientation(event) {
-            if (!gameActive || !ring || !gameRect) return;
+        function drag(e) {
+            if (!isDragging || !gameActive) return;
+            e.preventDefault();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            currentX = clientX - startX;
             
-            const gamma = event.gamma; // Left-right tilt (-90 to 90)
-            if (gamma !== null) {
-                // Map tilt to ring position
-                const tiltSensitivity = 4;
-                const maxX = gameRect.width - 60;
-                
-                ringX = Math.max(0, Math.min(maxX, ringX + gamma * tiltSensitivity * 0.3));
-                ring.style.left = ringX + 'px';
-            }
+            const gameRect = gameArea.getBoundingClientRect();
+            const basketWidth = basket.offsetWidth;
+            const maxX = gameRect.width - basketWidth;
+            
+            basketX = Math.max(0, Math.min(currentX, maxX));
+            basket.style.left = basketX + 'px';
+            basket.style.transform = 'translateX(0)';
         }
 
-        function hideInstructions() {
-            instructionOverlay.style.display = 'none';
+        function stopDrag() {
+            isDragging = false;
         }
 
         function startGame() {
-            lives = MAX_LIVES;
-            ringY = GAME_HEIGHT - 80;
+            score = 0;
+            combo = 1;
+            gameTime = GAME_DURATION;
             gameActive = true;
-            obstacles = [];
-            lastCollisionTime = 0;
-            keysPressed = {};
-            gameStartTime = Date.now();
-            elapsedTime = 0;
-            difficultyMultiplier = 1;
             
-            updateLives();
-            updateProgressText();
-            updateTimer();
+            updateScore();
+            updateCombo();
             
             startBtn.disabled = true;
             startBtn.textContent = 'Playing...';
             
-            // Hide target initially
-            target.classList.remove('visible');
+            // Clear any existing items
+            document.querySelectorAll('.falling-item').forEach(item => item.remove());
+            document.querySelectorAll('.score-popup').forEach(popup => popup.remove());
             
-            // Clear any existing elements
-            document.querySelectorAll('.obstacle').forEach(el => el.remove());
-            if (ring) ring.remove();
+            // Start spawning
+            spawnTimer = setInterval(spawnItem, SPAWN_INTERVAL);
             
-            // Get game area dimensions
-            gameRect = gameArea.getBoundingClientRect();
-            
-            // Create ring
-            ring = document.createElement('div');
-            ring.className = 'ring';
-            ring.innerHTML = '💍';
-            
-            ringX = (gameRect.width - 60) / 2;
-            ring.style.left = ringX + 'px';
-            ring.style.bottom = '20px';
-            
-            gameArea.appendChild(ring);
-            
-            // Mouse/touch controls for ring
-            ring.addEventListener('mousedown', startDrag);
-            ring.addEventListener('touchstart', startDrag, { passive: false });
-            document.addEventListener('mousemove', drag);
-            document.addEventListener('touchmove', drag, { passive: false });
-            document.addEventListener('mouseup', stopDrag);
-            document.addEventListener('touchend', stopDrag);
-            
-            // Start spawning obstacles
-            spawnObstacle(); // Spawn first one immediately
-            obstacleSpawnTimer = setInterval(spawnObstacle, OBSTACLE_SPAWN_INTERVAL);
-            
-            // Start game loop
-            gameLoop();
+            // Start countdown
+            countdownTimer = setInterval(updateTimer, 100);
         }
 
-        function spawnObstacle() {
+        function spawnItem() {
             if (!gameActive) return;
             
-            const obstacleTexts = ['💔', '😰', '⏰', '💰', '🤔', '😓', '🙈', '😱', '💸'];
-            const gameWidth = gameRect.width;
+            const item = document.createElement('div');
+            item.className = 'falling-item';
             
-            const obstacle = document.createElement('div');
-            obstacle.className = 'obstacle';
-            obstacle.innerHTML = obstacleTexts[Math.floor(Math.random() * obstacleTexts.length)];
+            // Increased difficulty: 65% chocolates, 35% veggies (was 75/25)
+            const isChocolate = Math.random() > 0.35;
             
-            // Start from top, random horizontal position
-            const y = -OBSTACLE_SIZE - 10;
-            const x = Math.random() * (gameWidth - OBSTACLE_SIZE);
-            
-            obstacle.style.top = y + 'px';
-            obstacle.style.left = x + 'px';
-            
-            // Vary fall speed slightly
-            const speed = OBSTACLE_FALL_SPEED * difficultyMultiplier * (0.8 + Math.random() * 0.4);
-            
-            obstacles.push({
-                element: obstacle,
-                x: x,
-                y: y,
-                speed: speed
-            });
-            
-            gameArea.appendChild(obstacle);
-        }
-
-        let dragStartX = 0;
-        let ringStartX = 0;
-
-        function startDrag(e) {
-            if (!gameActive) return;
-            e.preventDefault();
-            isMouseDragging = true;
-            
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            dragStartX = clientX;
-            ringStartX = ringX;
-        }
-
-        function drag(e) {
-            if (!isMouseDragging || !gameActive) return;
-            e.preventDefault();
-            
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const deltaX = clientX - dragStartX;
-            
-            const maxX = gameRect.width - 60;
-            
-            ringX = Math.max(0, Math.min(maxX, ringStartX + deltaX));
-            ring.style.left = ringX + 'px';
-        }
-
-        function stopDrag() {
-            isMouseDragging = false;
-        }
-
-        function gameLoop() {
-            if (!gameActive) return;
-            
-            // Update elapsed time
-            elapsedTime = (Date.now() - gameStartTime) / 1000;
-            updateTimer();
-            
-            // Increase difficulty every 8 seconds (faster than before)
-            difficultyMultiplier = 1 + Math.floor(elapsedTime / DIFFICULTY_INCREASE_INTERVAL) * 0.25;
-            
-            // Check if 60 seconds elapsed
-            if (elapsedTime >= GAME_DURATION) {
-                // Show target and move ring to it
-                target.classList.add('visible');
-                moveRingToTarget();
-                return;
+            if (isChocolate) {
+                item.innerHTML = chocolates[Math.floor(Math.random() * chocolates.length)];
+                item.dataset.type = 'chocolate';
+            } else {
+                item.innerHTML = veggies[Math.floor(Math.random() * veggies.length)];
+                item.dataset.type = 'veggie';
             }
             
-            // Handle keyboard input
-            if (keysPressed['ArrowLeft']) {
-                ringX = Math.max(0, ringX - KEYBOARD_SPEED);
-                ring.style.left = ringX + 'px';
-            }
-            if (keysPressed['ArrowRight']) {
-                const maxX = gameRect.width - 60;
-                ringX = Math.min(maxX, ringX + KEYBOARD_SPEED);
-                ring.style.left = ringX + 'px';
-            }
+            const gameRect = gameArea.getBoundingClientRect();
+            item.style.left = Math.random() * (gameRect.width - 50) + 'px';
             
-            // Update progress bar
-            const progress = (elapsedTime / GAME_DURATION) * 100;
-            progressBar.style.width = progress + '%';
+            // Faster falling: 2-3.5 seconds (was 2.5-4 seconds)
+            const fallDuration = 2 + Math.random() * 1.5;
+            item.style.animationDuration = fallDuration + 's';
             
-            // Move obstacles down and check collisions
-            const currentTime = Date.now();
+            gameArea.appendChild(item);
             
-            for (let i = obstacles.length - 1; i >= 0; i--) {
-                const obs = obstacles[i];
-                obs.y += obs.speed;
-                obs.element.style.top = obs.y + 'px';
-                
-                // Remove if off screen
-                if (obs.y > GAME_HEIGHT + 100) {
-                    obs.element.remove();
-                    obstacles.splice(i, 1);
-                    continue;
+            // Check collision
+            const checkCollision = setInterval(() => {
+                if (!gameActive || !item.parentNode) {
+                    clearInterval(checkCollision);
+                    return;
                 }
                 
-                // Check collision with cooldown
-                if (currentTime - lastCollisionTime > COLLISION_COOLDOWN) {
-                    if (checkCollision(obs)) {
-                        handleCollision();
-                        lastCollisionTime = currentTime;
+                const itemRect = item.getBoundingClientRect();
+                const basketRect = basket.getBoundingClientRect();
+                
+                if (
+                    itemRect.bottom >= basketRect.top &&
+                    itemRect.top <= basketRect.bottom &&
+                    itemRect.right >= basketRect.left &&
+                    itemRect.left <= basketRect.right
+                ) {
+                    clearInterval(checkCollision);
+                    catchItem(item);
+                }
+            }, 50);
+            
+            // Remove item after animation
+            setTimeout(() => {
+                if (item.parentNode) {
+                    item.remove();
+                    if (item.dataset.type === 'chocolate') {
+                        // Missed a chocolate, reset combo
+                        combo = 1;
+                        updateCombo();
                     }
                 }
-            }
-            
-            animationFrame = requestAnimationFrame(gameLoop);
+            }, fallDuration * 1000);
         }
 
-        function moveRingToTarget() {
-            gameActive = false;
-            clearInterval(obstacleSpawnTimer);
+        function catchItem(item) {
+            const isChocolate = item.dataset.type === 'chocolate';
+            const itemRect = item.getBoundingClientRect();
             
-            // Stop spawning, let existing obstacles fall
-            setTimeout(() => {
-                // Animate ring to finger
-                ring.style.transition = 'all 2s ease';
-                ring.style.bottom = (GAME_HEIGHT - 70) + 'px';
-                ring.style.left = '50%';
-                ring.style.transform = 'translateX(-50%) scale(0.8)';
+            if (isChocolate) {
+                // Caught chocolate - good!
+                score++;
+                combo++;
                 
-                progressText.textContent = "💍 With all my heart... Will you marry me? 💖";
+                const points = combo > 5 ? 2 : 1;
+                showScorePopup('+' + points, itemRect.left, itemRect.top, '#10b981');
                 
-                setTimeout(() => {
-                    winGame();
-                }, 2000);
-            }, 1000);
-        }
-
-        function updateTimer() {
-            const remaining = Math.max(0, GAME_DURATION - elapsedTime);
-            timerDisplay.textContent = `Time: ${Math.floor(elapsedTime)}s / ${GAME_DURATION}s`;
-            
-            if (remaining <= 10 && remaining > 0) {
-                timerDisplay.style.color = '#ff6b6b';
-                timerDisplay.style.animation = 'pulse 0.5s ease-in-out infinite';
+                // Show combo if > 3
+                if (combo > 3) {
+                    comboText.textContent = `COMBO x${combo}! 🔥`;
+                    comboText.classList.add('show');
+                    setTimeout(() => comboText.classList.remove('show'), 1000);
+                }
+                
+                createCatchParticles(item, '✨');
+                basket.style.transform = 'translateX(0) scale(1.1)';
+                setTimeout(() => basket.style.transform = 'translateX(0) scale(1)', 200);
+                
             } else {
-                timerDisplay.style.color = '#ffd700';
-                timerDisplay.style.animation = 'none';
+                // Caught veggie - bad! Increased penalty from -2 to -3
+                combo = 1;
+                score = Math.max(0, score - 3);
+                
+                showScorePopup('-3', itemRect.left, itemRect.top, '#ef4444');
+                createCatchParticles(item, '💥');
+                basket.style.transform = 'translateX(0) scale(0.9)';
+                setTimeout(() => basket.style.transform = 'translateX(0) scale(1)', 200);
+            }
+            
+            item.classList.add('caught-animation');
+            setTimeout(() => item.remove(), 500);
+            
+            updateScore();
+            updateCombo();
+            
+            if (score >= TARGET_SCORE) {
+                winGame();
             }
         }
 
-        function checkCollision(obstacle) {
-            // Tighter hitboxes for more precision
-            const ringRect = {
-                left: ringX + 12,
-                right: ringX + 48,
-                top: ringY + 12,
-                bottom: ringY + 48
-            };
+        function showScorePopup(text, x, y, color) {
+            const popup = document.createElement('div');
+            popup.className = 'score-popup';
+            popup.textContent = text;
+            popup.style.color = color;
+            popup.style.left = x + 'px';
+            popup.style.top = y + 'px';
             
-            const obsRect = {
-                left: obstacle.x + 12,
-                right: obstacle.x + (OBSTACLE_SIZE - 12),
-                top: obstacle.y + 12,
-                bottom: obstacle.y + (OBSTACLE_SIZE - 12)
-            };
-            
-            return !(ringRect.right < obsRect.left || 
-                    ringRect.left > obsRect.right || 
-                    ringRect.bottom < obsRect.top || 
-                    ringRect.top > obsRect.bottom);
+            document.body.appendChild(popup);
+            setTimeout(() => popup.remove(), 1000);
         }
 
-        function handleCollision() {
-            lives--;
-            updateLives();
+        function createCatchParticles(element, emoji) {
+            const rect = element.getBoundingClientRect();
             
-            ring.classList.add('hit');
-            setTimeout(() => ring.classList.remove('hit'), 500);
-            
-            createCollisionParticles();
-            
-            if (lives <= 0) {
-                gameOver();
-            }
-        }
-
-        function createCollisionParticles() {
-            const particles = ['💥', '💔', '😰'];
-            
-            for (let i = 0; i < 6; i++) {
+            for (let i = 0; i < 8; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
-                particle.innerHTML = particles[Math.floor(Math.random() * particles.length)];
+                particle.innerHTML = emoji;
+                particle.style.left = rect.left + 'px';
+                particle.style.top = rect.top + 'px';
                 
-                const gameAreaRect = gameArea.getBoundingClientRect();
-                particle.style.left = (gameAreaRect.left + ringX + 30) + 'px';
-                particle.style.top = (gameAreaRect.top + (GAME_HEIGHT - ringY - 30)) + 'px';
-                
-                const angle = (Math.PI * 2 * i) / 6;
-                const distance = 50 + Math.random() * 30;
+                const angle = (Math.PI * 2 * i) / 8;
+                const distance = 50 + Math.random() * 50;
                 particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
                 particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
                 
@@ -929,85 +750,162 @@
             }
         }
 
-        function updateLives() {
-            for (let i = 1; i <= MAX_LIVES; i++) {
-                const heart = document.getElementById(`heart${i}`);
-                if (i > lives) {
-                    heart.classList.add('lost');
-                } else {
-                    heart.classList.remove('lost');
-                }
-            }
+        function updateScore() {
+            scoreDisplay.textContent = `${score}/${TARGET_SCORE}`;
         }
 
-        function updateProgressText(customText = null) {
-            if (customText) {
-                progressText.textContent = customText;
-                return;
-            }
+        function updateCombo() {
+            comboDisplay.textContent = `x${combo}`;
+        }
+
+        function updateTimer() {
+            gameTime -= 0.1;
+            const percentage = (gameTime / GAME_DURATION) * 100;
+            timerFill.style.width = percentage + '%';
             
-            const messages = [
-                { threshold: 0, text: "Every obstacle is a test of our love..." },
-                { threshold: 10, text: "Together, we can overcome anything 💕" },
-                { threshold: 20, text: "Love is patient, love is kind..." },
-                { threshold: 30, text: "Halfway through the storm... hold on! 💖" },
-                { threshold: 40, text: "Our love story is worth fighting for!" },
-                { threshold: 50, text: "Just a little more... I believe in us! 💍" },
-                { threshold: 60, text: "The doubts are fading... we're almost there!" },
-                { threshold: 70, text: "Nothing can stand between us now! 💓" },
-                { threshold: 80, text: "She's waiting... with hope in her heart 💝" },
-                { threshold: 90, text: "This is it... the moment of forever! 💞" }
-            ];
-            
-            for (let i = messages.length - 1; i >= 0; i--) {
-                if (elapsedTime >= (GAME_DURATION * messages[i].threshold / 100)) {
-                    progressText.textContent = messages[i].text;
-                    break;
-                }
+            if (gameTime <= 0) {
+                gameOver();
             }
         }
 
         function gameOver() {
             gameActive = false;
-            cancelAnimationFrame(animationFrame);
-            clearInterval(obstacleSpawnTimer);
+            clearInterval(spawnTimer);
+            clearInterval(countdownTimer);
             
             startBtn.disabled = false;
-            startBtn.textContent = 'Try Again 💔';
-            progressText.textContent = '💕 True love never gives up! Try again, my darling!';
+            startBtn.textContent = 'Try Again 🍫';
             
-            // Clean up event listeners
-            if (ring) {
-                ring.removeEventListener('mousedown', startDrag);
-                ring.removeEventListener('touchstart', startDrag);
-            }
-            document.removeEventListener('mousemove', drag);
-            document.removeEventListener('touchmove', drag);
-            document.removeEventListener('mouseup', stopDrag);
-            document.removeEventListener('touchend', stopDrag);
+            // Remove all falling items
+            document.querySelectorAll('.falling-item').forEach(item => item.remove());
         }
 
         function winGame() {
-            localStorage.setItem('piece2', 'true');
-            localStorage.setItem('day2_completed', 'true');
-
-            document.getElementById('winOverlay').classList.add('show');
-            createCelebration();
+            gameActive = false;
+            clearInterval(spawnTimer);
+            clearInterval(countdownTimer);
+            
+            // Save progress
+            localStorage.setItem('piece3', 'true');
+            localStorage.setItem('day3_completed', 'true');
+            
+            // Show win overlay
+            setTimeout(() => {
+                document.getElementById('winOverlay').classList.add('show');
+                initScratchCard();
+                createCelebration();
+            }, 500);
+            
             updateProgress();
-
-            cancelAnimationFrame(animationFrame);
-            clearInterval(obstacleSpawnTimer);
-
-            setTimeout(initScratchCard, 300);
         }
 
+        function initScratchCard() {
+            scratchCanvas = document.getElementById('scratchCanvas');
+            scratchCtx = scratchCanvas.getContext('2d');
+            
+            // Draw scratch-off coating
+            scratchCtx.fillStyle = '#8b7355';
+            scratchCtx.fillRect(0, 0, 250, 250);
+            
+            // Add texture
+            scratchCtx.fillStyle = '#6b5a47';
+            for (let i = 0; i < 100; i++) {
+                scratchCtx.fillRect(
+                    Math.random() * 250,
+                    Math.random() * 250,
+                    Math.random() * 3,
+                    Math.random() * 3
+                );
+            }
+            
+            // Add "Scratch here" text
+            scratchCtx.fillStyle = '#d2691e';
+            scratchCtx.font = 'bold 24px Georgia';
+            scratchCtx.textAlign = 'center';
+            scratchCtx.fillText('Scratch Here!', 125, 115);
+            scratchCtx.font = '20px Georgia';
+            scratchCtx.fillText('✨', 125, 145);
+            
+            // Add scratch event listeners
+            scratchCanvas.addEventListener('mousedown', startScratch);
+            scratchCanvas.addEventListener('mousemove', scratch);
+            scratchCanvas.addEventListener('mouseup', stopScratch);
+            scratchCanvas.addEventListener('touchstart', startScratch);
+            scratchCanvas.addEventListener('touchmove', scratch);
+            scratchCanvas.addEventListener('touchend', stopScratch);
+        }
+
+        function startScratch(e) {
+            e.preventDefault();
+            isScratching = true;
+        }
+
+        function scratch(e) {
+            if (!isScratching) return;
+            e.preventDefault();
+            
+            const rect = scratchCanvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+            
+            scratchCtx.globalCompositeOperation = 'destination-out';
+            scratchCtx.beginPath();
+            scratchCtx.arc(x, y, 20, 0, Math.PI * 2);
+            scratchCtx.fill();
+            
+            checkScratchProgress();
+        }
+
+        function stopScratch() {
+            isScratching = false;
+        }
+
+        function checkScratchProgress() {
+            const imageData = scratchCtx.getImageData(0, 0, 250, 250);
+            let transparent = 0;
+            
+            for (let i = 3; i < imageData.data.length; i += 4) {
+                if (imageData.data[i] === 0) transparent++;
+            }
+            
+            scratchPercentage = (transparent / (250 * 250)) * 100;
+            
+            if (scratchPercentage > 60) {
+                revealImage();
+            }
+        }
+
+        function revealImage() {
+            // Remove scratch card
+            document.getElementById('scratchContainer').classList.add('hidden');
+            document.getElementById('scratchInstruction').classList.add('hidden');
+            
+            // Show piece reveal
+            const pieceReveal = document.getElementById('pieceReveal');
+            pieceReveal.style.display = 'block';
+            
+            // Show messages
+            document.getElementById('winMessage').style.display = 'block';
+            document.getElementById('pieceUnlocked').style.display = 'block';
+            document.getElementById('seeYou').style.display = 'block';
+            
+            // Transition to real image after 3 seconds
+            setTimeout(() => {
+                const cartoonImage = document.getElementById('cartoonImage');
+                const realImage = document.getElementById('realImage');
+                
+                cartoonImage.classList.add('hidden');
+                realImage.classList.remove('hidden');
+                realImage.classList.add('fade-in');
+            }, 3000);
+        }
 
         function createCelebration() {
             const interval = setInterval(() => {
                 for (let i = 0; i < 3; i++) {
                     const confetti = document.createElement('div');
                     confetti.className = 'particle';
-                    confetti.innerHTML = ['💍', '💕', '💖', '✨', '🎊'][Math.floor(Math.random() * 5)];
+                    confetti.innerHTML = ['🍫', '🍬', '🍭', '✨'][Math.floor(Math.random() * 4)];
                     confetti.style.left = Math.random() * window.innerWidth + 'px';
                     confetti.style.top = '0px';
                     confetti.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
@@ -1033,86 +931,6 @@
 
         // Initialize
         updateProgress();
-        
-        // Update progress text periodically during game
-        setInterval(() => {
-            if (gameActive) {
-                updateProgressText();
-            }
-        }, 2000);
-
-        function initScratchCard() {
-        const canvas = document.getElementById('scratchCanvas');
-        const ctx = canvas.getContext('2d');
-        const container = document.getElementById('scratchContainer');
-
-        const w = container.offsetWidth;
-        const h = container.offsetHeight;
-
-        canvas.width = w;
-        canvas.height = h;
-
-        // Draw scratch cover
-        ctx.fillStyle = '#c9184a';
-        ctx.fillRect(0, 0, w, h);
-
-        ctx.globalCompositeOperation = 'destination-out';
-
-        let isDrawing = false;
-        let scratchedPixels = 0;
-
-        function scratch(x, y) {
-            ctx.beginPath();
-            ctx.arc(x, y, 18, 0, Math.PI * 2);
-            ctx.fill();
-        }
-
-        function checkScratchPercent() {
-            const imgData = ctx.getImageData(0, 0, w, h);
-            let cleared = 0;
-            for (let i = 3; i < imgData.data.length; i += 4) {
-                if (imgData.data[i] === 0) cleared++;
-            }
-            const percent = cleared / (imgData.data.length / 4);
-            if (percent > 0.35) {
-                canvas.style.display = 'none';
-                triggerSecondImage();
-            }
-        }
-
-        function start(e) {
-            isDrawing = true;
-            move(e);
-        }
-
-        function move(e) {
-            if (!isDrawing) return;
-            const rect = canvas.getBoundingClientRect();
-            const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-            const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-            scratch(x, y);
-            checkScratchPercent();
-        }
-
-        function stop() {
-            isDrawing = false;
-        }
-
-        canvas.addEventListener('mousedown', start);
-        canvas.addEventListener('mousemove', move);
-        canvas.addEventListener('mouseup', stop);
-
-        canvas.addEventListener('touchstart', start);
-        canvas.addEventListener('touchmove', move);
-        canvas.addEventListener('touchend', stop);
-    }
-
-    function triggerSecondImage() {
-        setTimeout(() => {
-            document.getElementById('pieceCartoon2').classList.remove('show');
-            document.getElementById('pieceReal2').classList.add('show');
-        }, 1500);
-    }
     </script>
 </body>
 </html>
