@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 3 - Sweet Moments 🍫</title>
+    <title>Day 4 - Teddy Memory Match 🧸</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Georgia', serif;
-            background: linear-gradient(135deg, #3d2817 0%, #6b4423 50%, #8b5a3c 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -22,25 +22,25 @@
             position: relative;
         }
 
-        /* Floating chocolate particles */
-        .choco-float {
+        /* Floating hearts */
+        .float-heart {
             position: absolute;
-            font-size: 20px;
-            opacity: 0.2;
-            animation: chocoFloat 20s infinite;
+            font-size: 25px;
+            opacity: 0.15;
+            animation: heartFloat 15s infinite;
             pointer-events: none;
         }
 
-        @keyframes chocoFloat {
+        @keyframes heartFloat {
             0% {
                 transform: translateY(100vh) rotate(0deg);
                 opacity: 0;
             }
             10% {
-                opacity: 0.2;
+                opacity: 0.15;
             }
             90% {
-                opacity: 0.2;
+                opacity: 0.15;
             }
             100% {
                 transform: translateY(-100vh) rotate(360deg);
@@ -51,7 +51,7 @@
         .container {
             text-align: center;
             padding: 20px;
-            max-width: 500px;
+            max-width: 600px;
             width: 100%;
             position: relative;
             z-index: 10;
@@ -59,9 +59,9 @@
 
         .day-badge {
             display: inline-block;
-            background: rgba(139, 69, 19, 0.3);
-            border: 2px solid #d2691e;
-            color: #ffdab9;
+            background: rgba(255, 182, 193, 0.3);
+            border: 2px solid #ff69b4;
+            color: #fff;
             padding: 8px 20px;
             border-radius: 20px;
             font-size: 14px;
@@ -71,19 +71,19 @@
         }
 
         @keyframes glow {
-            0%, 100% { box-shadow: 0 0 10px rgba(210, 105, 30, 0.3); }
-            50% { box-shadow: 0 0 20px rgba(210, 105, 30, 0.6); }
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 105, 180, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 105, 180, 0.8); }
         }
 
         h1 {
-            color: #ffdab9;
+            color: #fff;
             font-size: 32px;
             margin-bottom: 15px;
-            text-shadow: 0 0 20px rgba(210, 105, 30, 0.5);
+            text-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
         }
 
         .subtitle {
-            color: #deb887;
+            color: #ffb6c1;
             font-size: 16px;
             margin-bottom: 20px;
             font-style: italic;
@@ -97,142 +97,205 @@
         }
 
         .stat-box {
-            background: rgba(139, 69, 19, 0.2);
-            border: 2px solid rgba(210, 105, 30, 0.4);
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 105, 180, 0.4);
             border-radius: 15px;
-            padding: 15px;
+            padding: 12px;
             flex: 1;
         }
 
         .stat-label {
-            color: #deb887;
+            color: #ffb6c1;
             font-size: 12px;
             margin-bottom: 5px;
         }
 
         .stat-value {
-            color: #d2691e;
-            font-size: 28px;
+            color: #fff;
+            font-size: 24px;
             font-weight: bold;
-            text-shadow: 0 0 10px rgba(210, 105, 30, 0.5);
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
         }
 
         .timer-bar {
             width: 100%;
-            height: 8px;
+            height: 10px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
+            border-radius: 5px;
             overflow: hidden;
             margin-bottom: 20px;
+            border: 2px solid rgba(255, 105, 180, 0.3);
         }
 
         .timer-fill {
             height: 100%;
-            background: linear-gradient(90deg, #d2691e, #cd853f);
+            background: linear-gradient(90deg, #ff69b4, #ff1493);
             transition: width 0.1s linear;
-            box-shadow: 0 0 10px rgba(210, 105, 30, 0.8);
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.8);
         }
 
         .game-area {
-            position: relative;
-            width: 100%;
-            height: 450px;
             background: rgba(0, 0, 0, 0.3);
             border-radius: 20px;
-            border: 2px solid rgba(210, 105, 30, 0.4);
-            overflow: hidden;
+            border: 3px solid rgba(255, 105, 180, 0.5);
+            padding: 20px;
+            margin-bottom: 20px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            min-height: 480px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
             margin-bottom: 20px;
         }
 
-        .basket {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 100px;
-            font-size: 70px;
-            cursor: grab;
-            user-select: none;
-            transition: transform 0.1s ease;
-            filter: drop-shadow(0 5px 10px rgba(210, 105, 30, 0.5));
-            z-index: 50;
-        }
-
-        .basket:active {
-            cursor: grabbing;
-            transform: translateX(-50%) scale(1.1);
-        }
-
-        .falling-item {
-            position: absolute;
-            font-size: 40px;
+        .card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            border-radius: 15px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
             cursor: pointer;
-            user-select: none;
-            animation: fall linear;
-            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.3));
-            z-index: 10;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
-        @keyframes fall {
-            from {
-                top: -60px;
-                transform: rotate(0deg);
-            }
-            to {
-                top: 105%;
-                transform: rotate(360deg);
-            }
+        .card:hover {
+            transform: scale(1.05);
         }
 
-        .caught-animation {
-            animation: catchPop 0.5s ease forwards;
+        .card.flipped {
+            transform: rotateY(180deg);
         }
 
-        @keyframes catchPop {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.3); opacity: 1; }
-            100% { transform: scale(0); opacity: 0; }
+        .card.matched {
+            animation: matchPulse 0.6s ease;
+            border-color: #10b981;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
         }
 
-        .score-popup {
+        @keyframes matchPulse {
+            0%, 100% { transform: scale(1) rotateY(180deg); }
+            50% { transform: scale(1.15) rotateY(180deg); }
+        }
+
+        .card-front, .card-back {
             position: absolute;
-            font-size: 24px;
-            font-weight: bold;
-            color: #ffd700;
-            pointer-events: none;
-            animation: scorePopup 1s ease forwards;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-            z-index: 100;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 38px;
         }
 
-        @keyframes scorePopup {
-            0% { transform: translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateY(-50px) scale(1.5); opacity: 0; }
+        .card-front {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-front::before {
+            content: '?';
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 42px;
+            font-weight: bold;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #fff, #ffe4e9);
+            transform: rotateY(180deg);
+            position: relative;
+        }
+
+        .card-teddy {
+            font-size: 38px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+        }
+
+        .card-accessory {
+            position: absolute;
+            font-size: 19px;
+            top: 6px;
+            right: 6px;
+        }
+
+        .preview-area {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(255, 105, 180, 0.5);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .preview-label {
+            color: #ffb6c1;
+            font-size: 13px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .preview-cards {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .preview-card {
+            background: linear-gradient(135deg, #fff, #ffe4e9);
+            border: 2px solid rgba(255, 105, 180, 0.5);
+            border-radius: 12px;
+            padding: 12px 18px;
+            font-size: 35px;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .preview-accessory {
+            position: absolute;
+            font-size: 18px;
+            top: 3px;
+            right: 3px;
         }
 
         .start-btn {
-            background: linear-gradient(135deg, #d2691e, #cd853f);
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
             color: white;
             border: none;
             padding: 15px 50px;
             border-radius: 30px;
             font-size: 20px;
             cursor: pointer;
-            box-shadow: 0 5px 20px rgba(210, 105, 30, 0.4);
+            box-shadow: 0 5px 20px rgba(255, 105, 180, 0.4);
             transition: all 0.3s ease;
             font-weight: bold;
         }
 
         .start-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 7px 25px rgba(210, 105, 30, 0.6);
+            box-shadow: 0 7px 25px rgba(255, 105, 180, 0.6);
         }
 
         .start-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+        }
+
+        .hint {
+            color: #ffb6c1;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .progress {
+            margin-top: 20px;
+            color: #ffb6c1;
+            font-size: 14px;
         }
 
         /* Win overlay */
@@ -271,20 +334,64 @@
             to { transform: translateY(0); opacity: 1; }
         }
 
+        /* Scratch card styles */
+        .scratch-card-container {
+            width: 250px;
+            height: 250px;
+            margin: 30px auto;
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 0 40px rgba(255, 105, 180, 0.6);
+            animation: pieceGlow 2s ease-in-out infinite;
+        }
+
+        .scratch-card-container.hidden {
+            display: none;
+        }
+
+        #scratchCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 15px;
+            cursor: grab;
+            z-index: 2;
+        }
+
+        #scratchCanvas:active {
+            cursor: grabbing;
+        }
+
+        .scratch-instruction {
+            color: #ffb6c1;
+            font-size: 16px;
+            margin-top: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .scratch-instruction.hidden {
+            display: none;
+        }
+
         .piece-reveal {
             width: 250px;
             height: 250px;
             margin: 30px auto;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 0 40px rgba(210, 105, 30, 0.6);
+            box-shadow: 0 0 40px rgba(255, 105, 180, 0.6);
             animation: pieceGlow 2s ease-in-out infinite;
             position: relative;
         }
 
         @keyframes pieceGlow {
-            0%, 100% { box-shadow: 0 0 40px rgba(210, 105, 30, 0.6); }
-            50% { box-shadow: 0 0 60px rgba(210, 105, 30, 0.9); }
+            0%, 100% { box-shadow: 0 0 40px rgba(255, 105, 180, 0.6); }
+            50% { box-shadow: 0 0 60px rgba(255, 105, 180, 0.9); }
         }
 
         .piece-reveal img {
@@ -309,52 +416,8 @@
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* Scratch card styles */
-        .scratch-card-container {
-            width: 250px;
-            height: 250px;
-            margin: 30px auto;
-            border-radius: 15px;
-            position: relative;
-            box-shadow: 0 0 40px rgba(210, 105, 30, 0.6);
-            animation: pieceGlow 2s ease-in-out infinite;
-        }
-
-        .scratch-card-container.hidden {
-            display: none;
-        }
-
-        #scratchCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            border-radius: 15px;
-            cursor: grab;
-            z-index: 2;
-        }
-
-        #scratchCanvas:active {
-            cursor: grabbing;
-        }
-
-        .scratch-instruction {
-            color: #ffdab9;
-            font-size: 16px;
-            margin-top: 20px;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
-
-        .scratch-instruction.hidden {
-            display: none;
-        }
-
         .win-title {
-            color: #d2691e;
+            color: #ff69b4;
             font-size: 36px;
             margin-bottom: 20px;
             animation: bounce 1s ease;
@@ -366,14 +429,14 @@
         }
 
         .win-message {
-            color: #ffdab9;
+            color: #fff;
             font-size: 18px;
             line-height: 1.6;
             margin-bottom: 30px;
         }
 
         .see-you {
-            color: #deb887;
+            color: #ffb6c1;
             font-size: 16px;
             font-style: italic;
             opacity: 0;
@@ -382,12 +445,6 @@
 
         @keyframes fadeInDelayed {
             to { opacity: 1; }
-        }
-
-        .progress {
-            margin-top: 20px;
-            color: #deb887;
-            font-size: 14px;
         }
 
         .particle {
@@ -409,24 +466,21 @@
             }
         }
 
-        .hint {
-            color: #d2691e;
-            font-size: 14px;
-            margin-top: 15px;
-        }
-
         .combo-display {
             position: absolute;
-            top: 20px;
+            top: 10px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 28px;
-            color: #ffd700;
+            font-size: 24px;
+            color: #10b981;
             font-weight: bold;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            text-shadow: 0 0 20px rgba(16, 185, 129, 0.8);
             opacity: 0;
             transition: all 0.3s ease;
             z-index: 100;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 16px;
+            border-radius: 10px;
         }
 
         .combo-display.show {
@@ -436,38 +490,42 @@
 
         @keyframes comboPulse {
             0%, 100% { transform: translateX(-50%) scale(1); }
-            50% { transform: translateX(-50%) scale(1.3); }
+            50% { transform: translateX(-50%) scale(1.2); }
         }
     </style>
 </head>
 <body>
-    <!-- Floating chocolates background -->
+    <!-- Floating hearts background -->
     <script>
-        const chocoTypes = ['🍫', '🍬', '🍭', '🧁'];
-        for (let i = 0; i < 12; i++) {
-            const choco = document.createElement('div');
-            choco.className = 'choco-float';
-            choco.innerHTML = chocoTypes[Math.floor(Math.random() * chocoTypes.length)];
-            choco.style.left = Math.random() * 100 + '%';
-            choco.style.animationDelay = Math.random() * 20 + 's';
-            choco.style.animationDuration = (15 + Math.random() * 10) + 's';
-            document.body.appendChild(choco);
+        const heartTypes = ['💕', '💖', '💗', '🧸'];
+        for (let i = 0; i < 15; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'float-heart';
+            heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 15 + 's';
+            heart.style.animationDuration = (12 + Math.random() * 8) + 's';
+            document.body.appendChild(heart);
         }
     </script>
 
     <div class="container">
-        <div class="day-badge">DAY 3 OF 7 - CHOCOLATE DAY</div>
-        <h1>Sweet Moments 🍫</h1>
-        <p class="subtitle">Catch the chocolates, avoid the veggies!</p>
+        <div class="day-badge">DAY 4 OF 7 - TEDDY DAY</div>
+        <h1>Teddy Memory Match 🧸</h1>
+        <p class="subtitle">Match all the teddy pairs before time runs out!</p>
         
         <div class="stats">
             <div class="stat-box">
-                <div class="stat-label">CHOCOLATES</div>
-                <div class="stat-value" id="score">0/30</div>
+                <div class="stat-label">MATCHES</div>
+                <div class="stat-value" id="score">0/9</div>
             </div>
             <div class="stat-box">
-                <div class="stat-label">COMBO</div>
-                <div class="stat-value" id="combo">x1</div>
+                <div class="stat-label">MOVES</div>
+                <div class="stat-value" id="moves">0</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">STREAK</div>
+                <div class="stat-value" id="streak">0</div>
             </div>
         </div>
 
@@ -475,24 +533,30 @@
             <div class="timer-fill" id="timerFill" style="width: 100%;"></div>
         </div>
 
-        <div class="game-area" id="gameArea">
+        <div class="game-area">
             <div class="combo-display" id="comboDisplay"></div>
-            <div class="basket" id="basket">🧺</div>
+            
+            <div class="preview-area" id="previewArea">
+                <div class="preview-label">🔍 MEMORIZE THESE TEDDIES (4 seconds):</div>
+                <div class="preview-cards" id="previewCards"></div>
+            </div>
+
+            <div class="cards-grid" id="cardsGrid"></div>
         </div>
 
-        <button class="start-btn" id="startBtn" onclick="startGame()">Start Game 🍫</button>
-        <p class="hint">💡 Drag basket to catch chocolates! Avoid veggies!</p>
+        <button class="start-btn" id="startBtn" onclick="startGame()">Start Game 🎮</button>
+        <p class="hint">💡 Match pairs of identical teddies with accessories!</p>
         <div class="progress" id="progress">Pieces unlocked: <span id="pieceCount">0</span> / 6</div>
     </div>
 
     <!-- Win Overlay -->
     <div class="win-overlay" id="winOverlay">
         <div class="win-content">
-            <div class="win-title">Sweet Success! 🍫✨</div>
+            <div class="win-title">Perfect Match! 🧸✨</div>
             
             <!-- Scratch card container -->
             <div class="scratch-card-container" id="scratchContainer">
-                <img src="piece3.1.jpg" alt="Hidden Image" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
+                <img src="piece4.1.jpg" alt="Hidden Image" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
                 <canvas id="scratchCanvas" width="250" height="250"></canvas>
             </div>
             
@@ -502,50 +566,52 @@
             
             <!-- Image reveal container (hidden initially) -->
             <div class="piece-reveal" id="pieceReveal" style="display: none;">
-                <img src="pieces/piece3.1.png" alt="Puzzle Piece 3 - Cartoon" id="cartoonImage" class="fade-in">
-                <img src="pieces/piece3.2.jpg" alt="Puzzle Piece 3 - Real" id="realImage" class="hidden">
+                <img src="pieces/piece4.1.png" alt="Puzzle Piece 4 - Cartoon" id="cartoonImage" class="fade-in">
+                <img src="pieces/piece4.2.png" alt="Puzzle Piece 4 - Real" id="realImage" class="hidden">
             </div>
             
             <p class="win-message" id="winMessage" style="display: none;">
-                "Life with you is sweeter than<br>
-                the finest chocolate.<br>
-                Every moment is a treat."
+                "You're my favorite teddy,<br>
+                the one I'd hug forever 🧸✨"
             </p>
+
             
             <p class="win-message" id="pieceUnlocked" style="display: none;">
-                🧩 <strong>Piece 3/6 unlocked!</strong>
+                🧩 <strong>Piece 4/6 unlocked!</strong>
             </p>
             
-            <p class="see-you" id="seeYou" style="display: none;">Tomorrow, something cuddly awaits... 🧸</p>
+            <p class="see-you" id="seeYou" style="display: none;">Tomorrow, let's make a promise... 🤝</p>
         </div>
     </div>
 
     <script>
-        const GAME_DURATION = 45; // Increased to 45 seconds
-        const TARGET_SCORE = 30; // Increased from 25 to 30
-        const SPAWN_INTERVAL = 550; // Decreased from 700ms to spawn faster
+        const GAME_DURATION = 120; // 55 seconds - slightly less time
+        const PAIRS_TO_MATCH = 9; // 9 pairs = 18 cards (one more pair)
+        const PREVIEW_TIME = 4000; // 4 seconds to memorize (less time)
         
-        // Chocolate types (good to catch)
-        const chocolates = ['🍫', '🍬', '🍭', '🧁', '🍰', '🎂', '🍪', '🍩'];
-        // Veggies (bad to catch) - increased variety
-        const veggies = ['🥦', '🥬', '🥒', '🌽', '🥕', '🍅'];
+        const TEDDIES = ['🧸', '🐻', '🐻‍❄️', '🐼'];
+        const ACCESSORIES = ['🎀', '🎩', '👑', '🌸', '💖', '🎁', '⭐', '💝'];
         
-        let score = 0;
-        let combo = 1;
         let gameActive = false;
         let gameTime = GAME_DURATION;
-        let spawnTimer;
-        let countdownTimer;
-        let basketX = 0;
-        let isDragging = false;
+        let score = 0;
+        let moves = 0;
+        let streak = 0;
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let cards = [];
+        let canFlip = false;
+        let countdownTimer = null;
 
-        const basket = document.getElementById('basket');
-        const gameArea = document.getElementById('gameArea');
+        const cardsGrid = document.getElementById('cardsGrid');
+        const previewArea = document.getElementById('previewArea');
+        const previewCards = document.getElementById('previewCards');
         const scoreDisplay = document.getElementById('score');
-        const comboDisplay = document.getElementById('combo');
+        const movesDisplay = document.getElementById('moves');
+        const streakDisplay = document.getElementById('streak');
         const timerFill = document.getElementById('timerFill');
         const startBtn = document.getElementById('startBtn');
-        const comboText = document.getElementById('comboDisplay');
+        const comboDisplay = document.getElementById('comboDisplay');
 
         // Scratch card variables
         let scratchCanvas;
@@ -553,195 +619,184 @@
         let isScratching = false;
         let scratchPercentage = 0;
 
-        // Touch and mouse events for basket
-        let startX = 0;
-        let currentX = 0;
-
-        basket.addEventListener('mousedown', startDrag);
-        basket.addEventListener('touchstart', startDrag);
-        document.addEventListener('mousemove', drag);
-        document.addEventListener('touchmove', drag);
-        document.addEventListener('mouseup', stopDrag);
-        document.addEventListener('touchend', stopDrag);
-
-        function startDrag(e) {
-            if (!gameActive) return;
-            isDragging = true;
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            startX = clientX - basketX;
-        }
-
-        function drag(e) {
-            if (!isDragging || !gameActive) return;
-            e.preventDefault();
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            currentX = clientX - startX;
-            
-            const gameRect = gameArea.getBoundingClientRect();
-            const basketWidth = basket.offsetWidth;
-            const maxX = gameRect.width - basketWidth;
-            
-            basketX = Math.max(0, Math.min(currentX, maxX));
-            basket.style.left = basketX + 'px';
-            basket.style.transform = 'translateX(0)';
-        }
-
-        function stopDrag() {
-            isDragging = false;
-        }
-
         function startGame() {
-            score = 0;
-            combo = 1;
+            gameActive = false;
             gameTime = GAME_DURATION;
-            gameActive = true;
+            score = 0;
+            moves = 0;
+            streak = 0;
+            matchedPairs = 0;
+            flippedCards = [];
+            canFlip = false;
             
             updateScore();
-            updateCombo();
+            updateMoves();
+            updateStreak();
             
             startBtn.disabled = true;
             startBtn.textContent = 'Playing...';
             
-            // Clear any existing items
-            document.querySelectorAll('.falling-item').forEach(item => item.remove());
-            document.querySelectorAll('.score-popup').forEach(popup => popup.remove());
+            generateCards();
+            showPreview();
+        }
+
+        function generateCards() {
+            cards = [];
+            cardsGrid.innerHTML = '';
             
-            // Start spawning
-            spawnTimer = setInterval(spawnItem, SPAWN_INTERVAL);
+            // Create pairs
+            const pairs = [];
+            for (let i = 0; i < PAIRS_TO_MATCH; i++) {
+                const teddy = TEDDIES[Math.floor(Math.random() * TEDDIES.length)];
+                const accessory = ACCESSORIES[i % ACCESSORIES.length];
+                const pair = { teddy, accessory, id: i };
+                pairs.push({ ...pair });
+                pairs.push({ ...pair });
+            }
+            
+            // Shuffle
+            shuffleArray(pairs);
+            
+            // Create card elements
+            pairs.forEach((pair, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.dataset.id = pair.id;
+                card.dataset.teddy = pair.teddy;
+                card.dataset.accessory = pair.accessory;
+                
+                card.innerHTML = `
+                    <div class="card-front"></div>
+                    <div class="card-back">
+                        <div class="card-teddy">${pair.teddy}</div>
+                        <div class="card-accessory">${pair.accessory}</div>
+                    </div>
+                `;
+                
+                card.addEventListener('click', () => flipCard(card, index));
+                cardsGrid.appendChild(card);
+                cards.push(card);
+            });
+        }
+
+        function showPreview() {
+            previewArea.style.display = 'block';
+            previewCards.innerHTML = '';
+            
+            // Show unique teddies
+            const uniquePairs = [];
+            const seen = new Set();
+            
+            cards.forEach(card => {
+                const key = card.dataset.teddy + card.dataset.accessory;
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    uniquePairs.push({
+                        teddy: card.dataset.teddy,
+                        accessory: card.dataset.accessory
+                    });
+                }
+            });
+            
+            uniquePairs.forEach(pair => {
+                const preview = document.createElement('div');
+                preview.className = 'preview-card';
+                preview.innerHTML = `
+                    ${pair.teddy}
+                    <span class="preview-accessory">${pair.accessory}</span>
+                `;
+                previewCards.appendChild(preview);
+            });
+            
+            // Hide preview and start game after 4 seconds
+            setTimeout(() => {
+                previewArea.style.display = 'none';
+                startGameplay();
+            }, PREVIEW_TIME);
+        }
+
+        function startGameplay() {
+            gameActive = true;
+            canFlip = true;
             
             // Start countdown
             countdownTimer = setInterval(updateTimer, 100);
         }
 
-        function spawnItem() {
-            if (!gameActive) return;
+        function flipCard(card, index) {
+            if (!canFlip || !gameActive) return;
+            if (card.classList.contains('flipped') || card.classList.contains('matched')) return;
+            if (flippedCards.length >= 2) return;
             
-            const item = document.createElement('div');
-            item.className = 'falling-item';
+            card.classList.add('flipped');
+            flippedCards.push({ card, index });
             
-            // Increased difficulty: 65% chocolates, 35% veggies (was 75/25)
-            const isChocolate = Math.random() > 0.35;
+            if (flippedCards.length === 2) {
+                canFlip = false;
+                moves++;
+                updateMoves();
+                
+                setTimeout(checkMatch, 800);
+            }
+        }
+
+        function checkMatch() {
+            const [first, second] = flippedCards;
             
-            if (isChocolate) {
-                item.innerHTML = chocolates[Math.floor(Math.random() * chocolates.length)];
-                item.dataset.type = 'chocolate';
+            if (first.card.dataset.id === second.card.dataset.id) {
+                // Match!
+                first.card.classList.add('matched');
+                second.card.classList.add('matched');
+                matchedPairs++;
+                streak++;
+                
+                updateScore();
+                updateStreak();
+                
+                if (streak >= 3) {
+                    showCombo();
+                }
+                
+                createParticles(first.card);
+                createParticles(second.card);
+                
+                if (matchedPairs >= PAIRS_TO_MATCH) {
+                    winGame();
+                }
             } else {
-                item.innerHTML = veggies[Math.floor(Math.random() * veggies.length)];
-                item.dataset.type = 'veggie';
+                // No match
+                setTimeout(() => {
+                    first.card.classList.remove('flipped');
+                    second.card.classList.remove('flipped');
+                }, 400);
+                
+                streak = 0;
+                updateStreak();
             }
             
-            const gameRect = gameArea.getBoundingClientRect();
-            item.style.left = Math.random() * (gameRect.width - 50) + 'px';
-            
-            // Faster falling: 2-3.5 seconds (was 2.5-4 seconds)
-            const fallDuration = 2 + Math.random() * 1.5;
-            item.style.animationDuration = fallDuration + 's';
-            
-            gameArea.appendChild(item);
-            
-            // Check collision
-            const checkCollision = setInterval(() => {
-                if (!gameActive || !item.parentNode) {
-                    clearInterval(checkCollision);
-                    return;
-                }
-                
-                const itemRect = item.getBoundingClientRect();
-                const basketRect = basket.getBoundingClientRect();
-                
-                if (
-                    itemRect.bottom >= basketRect.top &&
-                    itemRect.top <= basketRect.bottom &&
-                    itemRect.right >= basketRect.left &&
-                    itemRect.left <= basketRect.right
-                ) {
-                    clearInterval(checkCollision);
-                    catchItem(item);
-                }
-            }, 50);
-            
-            // Remove item after animation
-            setTimeout(() => {
-                if (item.parentNode) {
-                    item.remove();
-                    if (item.dataset.type === 'chocolate') {
-                        // Missed a chocolate, reset combo
-                        combo = 1;
-                        updateCombo();
-                    }
-                }
-            }, fallDuration * 1000);
+            flippedCards = [];
+            canFlip = true;
         }
 
-        function catchItem(item) {
-            const isChocolate = item.dataset.type === 'chocolate';
-            const itemRect = item.getBoundingClientRect();
-            
-            if (isChocolate) {
-                // Caught chocolate - good!
-                score++;
-                combo++;
-                
-                const points = combo > 5 ? 2 : 1;
-                showScorePopup('+' + points, itemRect.left, itemRect.top, '#10b981');
-                
-                // Show combo if > 3
-                if (combo > 3) {
-                    comboText.textContent = `COMBO x${combo}! 🔥`;
-                    comboText.classList.add('show');
-                    setTimeout(() => comboText.classList.remove('show'), 1000);
-                }
-                
-                createCatchParticles(item, '✨');
-                basket.style.transform = 'translateX(0) scale(1.1)';
-                setTimeout(() => basket.style.transform = 'translateX(0) scale(1)', 200);
-                
-            } else {
-                // Caught veggie - bad! Increased penalty from -2 to -3
-                combo = 1;
-                score = Math.max(0, score - 3);
-                
-                showScorePopup('-3', itemRect.left, itemRect.top, '#ef4444');
-                createCatchParticles(item, '💥');
-                basket.style.transform = 'translateX(0) scale(0.9)';
-                setTimeout(() => basket.style.transform = 'translateX(0) scale(1)', 200);
-            }
-            
-            item.classList.add('caught-animation');
-            setTimeout(() => item.remove(), 500);
-            
-            updateScore();
-            updateCombo();
-            
-            if (score >= TARGET_SCORE) {
-                winGame();
-            }
+        function showCombo() {
+            comboDisplay.textContent = `🔥 ${streak} STREAK! +${streak} bonus!`;
+            comboDisplay.classList.add('show');
+            setTimeout(() => comboDisplay.classList.remove('show'), 1500);
         }
 
-        function showScorePopup(text, x, y, color) {
-            const popup = document.createElement('div');
-            popup.className = 'score-popup';
-            popup.textContent = text;
-            popup.style.color = color;
-            popup.style.left = x + 'px';
-            popup.style.top = y + 'px';
-            
-            document.body.appendChild(popup);
-            setTimeout(() => popup.remove(), 1000);
-        }
-
-        function createCatchParticles(element, emoji) {
+        function createParticles(element) {
             const rect = element.getBoundingClientRect();
+            const particles = ['✨', '💕', '⭐', '💖'];
             
-            for (let i = 0; i < 8; i++) {
+            for (let i = 0; i < 6; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
-                particle.innerHTML = emoji;
-                particle.style.left = rect.left + 'px';
-                particle.style.top = rect.top + 'px';
+                particle.innerHTML = particles[Math.floor(Math.random() * particles.length)];
+                particle.style.left = rect.left + rect.width / 2 + 'px';
+                particle.style.top = rect.top + rect.height / 2 + 'px';
                 
-                const angle = (Math.PI * 2 * i) / 8;
-                const distance = 50 + Math.random() * 50;
+                const angle = (Math.PI * 2 * i) / 6;
+                const distance = 40 + Math.random() * 40;
                 particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
                 particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
                 
@@ -750,12 +805,28 @@
             }
         }
 
-        function updateScore() {
-            scoreDisplay.textContent = `${score}/${TARGET_SCORE}`;
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
         }
 
-        function updateCombo() {
-            comboDisplay.textContent = `x${combo}`;
+        function updateScore() {
+            scoreDisplay.textContent = `${matchedPairs}/${PAIRS_TO_MATCH}`;
+        }
+
+        function updateMoves() {
+            movesDisplay.textContent = moves;
+        }
+
+        function updateStreak() {
+            streakDisplay.textContent = streak;
+            if (streak >= 3) {
+                streakDisplay.style.color = '#10b981';
+            } else {
+                streakDisplay.style.color = '#fff';
+            }
         }
 
         function updateTimer() {
@@ -770,31 +841,27 @@
 
         function gameOver() {
             gameActive = false;
-            clearInterval(spawnTimer);
+            canFlip = false;
             clearInterval(countdownTimer);
             
             startBtn.disabled = false;
-            startBtn.textContent = 'Try Again 🍫';
-            
-            // Remove all falling items
-            document.querySelectorAll('.falling-item').forEach(item => item.remove());
+            startBtn.textContent = 'Try Again 🎮';
         }
 
         function winGame() {
             gameActive = false;
-            clearInterval(spawnTimer);
+            canFlip = false;
             clearInterval(countdownTimer);
             
             // Save progress
-            localStorage.setItem('piece3', 'true');
-            localStorage.setItem('day3_completed', 'true');
+            localStorage.setItem('piece4', 'true');
+            localStorage.setItem('day4_completed', 'true');
             
-            // Show win overlay
             setTimeout(() => {
                 document.getElementById('winOverlay').classList.add('show');
                 initScratchCard();
                 createCelebration();
-            }, 500);
+            }, 800);
             
             updateProgress();
         }
@@ -804,11 +871,11 @@
             scratchCtx = scratchCanvas.getContext('2d');
             
             // Draw scratch-off coating
-            scratchCtx.fillStyle = '#8b7355';
+            scratchCtx.fillStyle = '#ff69b4';
             scratchCtx.fillRect(0, 0, 250, 250);
             
             // Add texture
-            scratchCtx.fillStyle = '#6b5a47';
+            scratchCtx.fillStyle = '#ff1493';
             for (let i = 0; i < 100; i++) {
                 scratchCtx.fillRect(
                     Math.random() * 250,
@@ -819,12 +886,12 @@
             }
             
             // Add "Scratch here" text
-            scratchCtx.fillStyle = '#d2691e';
+            scratchCtx.fillStyle = '#ffffff';
             scratchCtx.font = 'bold 24px Georgia';
             scratchCtx.textAlign = 'center';
             scratchCtx.fillText('Scratch Here!', 125, 115);
             scratchCtx.font = '20px Georgia';
-            scratchCtx.fillText('✨', 125, 145);
+            scratchCtx.fillText('🧸', 125, 145);
             
             // Add scratch event listeners
             scratchCanvas.addEventListener('mousedown', startScratch);
@@ -905,7 +972,7 @@
                 for (let i = 0; i < 3; i++) {
                     const confetti = document.createElement('div');
                     confetti.className = 'particle';
-                    confetti.innerHTML = ['🍫', '🍬', '🍭', '✨'][Math.floor(Math.random() * 4)];
+                    confetti.innerHTML = ['🧸', '💕', '🎀', '✨'][Math.floor(Math.random() * 4)];
                     confetti.style.left = Math.random() * window.innerWidth + 'px';
                     confetti.style.top = '0px';
                     confetti.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
