@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 4 - Teddy Memory Match 🧸</title>
+    <title>Day 5 - Rose Petal Path 💍</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Georgia', serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 50%, #6c5b7b 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -22,25 +22,25 @@
             position: relative;
         }
 
-        /* Floating hearts */
-        .float-heart {
+        /* Floating items */
+        .float-item {
             position: absolute;
             font-size: 25px;
-            opacity: 0.15;
-            animation: heartFloat 15s infinite;
+            opacity: 0.12;
+            animation: itemFloat 20s infinite;
             pointer-events: none;
         }
 
-        @keyframes heartFloat {
+        @keyframes itemFloat {
             0% {
                 transform: translateY(100vh) rotate(0deg);
                 opacity: 0;
             }
             10% {
-                opacity: 0.15;
+                opacity: 0.12;
             }
             90% {
-                opacity: 0.15;
+                opacity: 0.12;
             }
             100% {
                 transform: translateY(-100vh) rotate(360deg);
@@ -51,7 +51,7 @@
         .container {
             text-align: center;
             padding: 20px;
-            max-width: 600px;
+            max-width: 700px;
             width: 100%;
             position: relative;
             z-index: 10;
@@ -59,8 +59,8 @@
 
         .day-badge {
             display: inline-block;
-            background: rgba(255, 182, 193, 0.3);
-            border: 2px solid #ff69b4;
+            background: rgba(255, 215, 0, 0.3);
+            border: 2px solid #ffd700;
             color: #fff;
             padding: 8px 20px;
             border-radius: 20px;
@@ -71,50 +71,94 @@
         }
 
         @keyframes glow {
-            0%, 100% { box-shadow: 0 0 10px rgba(255, 105, 180, 0.5); }
-            50% { box-shadow: 0 0 20px rgba(255, 105, 180, 0.8); }
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
         }
 
         h1 {
             color: #fff;
             font-size: 32px;
             margin-bottom: 15px;
-            text-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
         }
 
         .subtitle {
-            color: #ffb6c1;
+            color: #ffd700;
             font-size: 16px;
             margin-bottom: 20px;
             font-style: italic;
         }
 
+        .phase-indicator {
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            border-radius: 15px;
+            padding: 12px;
+            margin-bottom: 15px;
+            color: #ffd700;
+            font-size: 15px;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+        }
+
+        .phase-progress {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .phase-item {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .phase-item.collected {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-color: #10b981;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.6);
+        }
+
+        .phase-item.locked {
+            opacity: 0.3;
+            filter: grayscale(1);
+        }
+
         .stats {
             display: flex;
             justify-content: space-around;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             gap: 10px;
         }
 
         .stat-box {
             background: rgba(0, 0, 0, 0.3);
-            border: 2px solid rgba(255, 105, 180, 0.4);
+            border: 2px solid rgba(255, 215, 0, 0.4);
             border-radius: 15px;
-            padding: 12px;
+            padding: 10px 15px;
             flex: 1;
         }
 
         .stat-label {
-            color: #ffb6c1;
-            font-size: 12px;
+            color: #ffd700;
+            font-size: 11px;
             margin-bottom: 5px;
         }
 
         .stat-value {
             color: #fff;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
-            text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
 
         .timer-bar {
@@ -123,162 +167,221 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: 5px;
             overflow: hidden;
-            margin-bottom: 20px;
-            border: 2px solid rgba(255, 105, 180, 0.3);
+            margin-bottom: 15px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
         }
 
         .timer-fill {
             height: 100%;
-            background: linear-gradient(90deg, #ff69b4, #ff1493);
+            background: linear-gradient(90deg, #10b981, #ffd700, #ef4444);
             transition: width 0.1s linear;
-            box-shadow: 0 0 10px rgba(255, 105, 180, 0.8);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
         }
 
         .game-area {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.4);
             border-radius: 20px;
-            border: 3px solid rgba(255, 105, 180, 0.5);
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            min-height: 480px;
-        }
-
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .card {
-            aspect-ratio: 1;
-            background: linear-gradient(135deg, #ff69b4, #ff1493);
-            border-radius: 15px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            cursor: pointer;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.6s;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .card:hover {
-            transform: scale(1.05);
-        }
-
-        .card.flipped {
-            transform: rotateY(180deg);
-        }
-
-        .card.matched {
-            animation: matchPulse 0.6s ease;
-            border-color: #10b981;
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
-        }
-
-        @keyframes matchPulse {
-            0%, 100% { transform: scale(1) rotateY(180deg); }
-            50% { transform: scale(1.15) rotateY(180deg); }
-        }
-
-        .card-front, .card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            font-size: 38px;
-        }
-
-        .card-front {
-            background: linear-gradient(135deg, #ff69b4, #ff1493);
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .card-front::before {
-            content: '?';
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 42px;
-            font-weight: bold;
-        }
-
-        .card-back {
-            background: linear-gradient(135deg, #fff, #ffe4e9);
-            transform: rotateY(180deg);
-            position: relative;
-        }
-
-        .card-teddy {
-            font-size: 38px;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-        }
-
-        .card-accessory {
-            position: absolute;
-            font-size: 19px;
-            top: 6px;
-            right: 6px;
-        }
-
-        .preview-area {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px dashed rgba(255, 105, 180, 0.5);
-            border-radius: 15px;
+            border: 3px solid rgba(255, 215, 0, 0.5);
             padding: 15px;
             margin-bottom: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
         }
 
-        .preview-label {
-            color: #ffb6c1;
-            font-size: 13px;
-            margin-bottom: 10px;
+        .level-display {
+            color: #ffd700;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+        }
+
+        .maze-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, rgba(108, 91, 123, 0.3), rgba(192, 108, 132, 0.3));
+            border-radius: 15px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .maze-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 2px;
+            width: 100%;
+            height: 100%;
+            padding: 5px;
+        }
+
+        .maze-cell {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .maze-cell.wall {
+            background: linear-gradient(135deg, #4a4a4a, #2a2a2a);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .maze-cell.path {
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.4), rgba(255, 105, 180, 0.3));
+        }
+
+        .maze-cell.rose {
+            background: linear-gradient(135deg, rgba(255, 20, 147, 0.6), rgba(255, 105, 180, 0.4));
+            animation: rosePulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes rosePulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 20, 147, 0.6); }
+            50% { box-shadow: 0 0 20px rgba(255, 20, 147, 0.9); }
+        }
+
+        .maze-cell.heart {
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.6), rgba(255, 182, 193, 0.4));
+            animation: heartPulse 1.2s ease-in-out infinite;
+        }
+
+        @keyframes heartPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 105, 180, 0.6); }
+            50% { box-shadow: 0 0 20px rgba(255, 105, 180, 0.9); }
+        }
+
+        .maze-cell.letter {
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.6), rgba(168, 85, 247, 0.4));
+            animation: letterPulse 1.3s ease-in-out infinite;
+        }
+
+        @keyframes letterPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(147, 51, 234, 0.6); }
+            50% { box-shadow: 0 0 20px rgba(147, 51, 234, 0.9); }
+        }
+
+        .maze-cell.thorn {
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.6), rgba(178, 34, 34, 0.4));
+            animation: thornPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes thornPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .maze-cell.portal {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.6), rgba(75, 0, 130, 0.4));
+            animation: portalSpin 2s linear infinite;
+        }
+
+        @keyframes portalSpin {
+            0% { box-shadow: 0 0 15px rgba(138, 43, 226, 0.8); }
+            50% { box-shadow: 0 0 25px rgba(138, 43, 226, 1); }
+            100% { box-shadow: 0 0 15px rgba(138, 43, 226, 0.8); }
+        }
+
+        .maze-cell.visited {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.1));
+        }
+
+        .maze-cell.goal-locked {
+            background: linear-gradient(135deg, rgba(100, 100, 100, 0.5), rgba(70, 70, 70, 0.3));
+            opacity: 0.5;
+        }
+
+        .maze-cell.goal-unlocked {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.8), rgba(255, 165, 0, 0.6));
+            animation: goalPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes goalPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+            50% { box-shadow: 0 0 35px rgba(255, 215, 0, 1); }
+        }
+
+        .cell-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+        }
+
+        .player {
+            position: absolute;
+            font-size: 28px;
+            transition: all 0.15s ease;
+            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.7));
+            z-index: 10;
+            animation: playerBounce 0.5s ease-in-out infinite;
+        }
+
+        @keyframes playerBounce {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 250px;
+            margin: 15px auto;
+        }
+
+        .control-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+            user-select: none;
             font-weight: bold;
         }
 
-        .preview-cards {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
+        .control-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
 
-        .preview-card {
-            background: linear-gradient(135deg, #fff, #ffe4e9);
-            border: 2px solid rgba(255, 105, 180, 0.5);
-            border-radius: 12px;
-            padding: 12px 18px;
-            font-size: 35px;
-            position: relative;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        .control-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
         }
 
-        .preview-accessory {
-            position: absolute;
-            font-size: 18px;
-            top: 3px;
-            right: 3px;
+        .control-btn.empty {
+            background: none;
+            border: none;
+            box-shadow: none;
+            cursor: default;
         }
 
         .start-btn {
-            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            background: linear-gradient(135deg, #ffd700, #ff6b9d);
             color: white;
             border: none;
             padding: 15px 50px;
             border-radius: 30px;
             font-size: 20px;
             cursor: pointer;
-            box-shadow: 0 5px 20px rgba(255, 105, 180, 0.4);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
             transition: all 0.3s ease;
             font-weight: bold;
+            margin-bottom: 10px;
         }
 
         .start-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 7px 25px rgba(255, 105, 180, 0.6);
+            box-shadow: 0 7px 25px rgba(255, 215, 0, 0.6);
         }
 
         .start-btn:disabled {
@@ -287,15 +390,46 @@
         }
 
         .hint {
-            color: #ffb6c1;
-            font-size: 14px;
-            margin-top: 15px;
+            color: #ffd700;
+            font-size: 13px;
+            margin-top: 10px;
+            line-height: 1.4;
         }
 
         .progress {
-            margin-top: 20px;
-            color: #ffb6c1;
+            margin-top: 15px;
+            color: #ffd700;
             font-size: 14px;
+        }
+
+        .feedback-msg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 28px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px 35px;
+            border-radius: 15px;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .feedback-msg.show {
+            animation: feedbackShow 2s ease;
+        }
+
+        @keyframes feedbackShow {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            20% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+            80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -60%) scale(0.8); }
         }
 
         /* Win overlay */
@@ -334,14 +468,13 @@
             to { transform: translateY(0); opacity: 1; }
         }
 
-        /* Scratch card styles */
         .scratch-card-container {
             width: 250px;
             height: 250px;
             margin: 30px auto;
             border-radius: 15px;
             position: relative;
-            box-shadow: 0 0 40px rgba(255, 105, 180, 0.6);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
             animation: pieceGlow 2s ease-in-out infinite;
         }
 
@@ -363,7 +496,7 @@
         }
 
         .scratch-instruction {
-            color: #ffb6c1;
+            color: #ffd700;
             font-size: 16px;
             margin-top: 20px;
             animation: pulse 2s ease-in-out infinite;
@@ -384,14 +517,14 @@
             margin: 30px auto;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 0 40px rgba(255, 105, 180, 0.6);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
             animation: pieceGlow 2s ease-in-out infinite;
             position: relative;
         }
 
         @keyframes pieceGlow {
-            0%, 100% { box-shadow: 0 0 40px rgba(255, 105, 180, 0.6); }
-            50% { box-shadow: 0 0 60px rgba(255, 105, 180, 0.9); }
+            0%, 100% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.6); }
+            50% { box-shadow: 0 0 60px rgba(255, 215, 0, 0.9); }
         }
 
         .piece-reveal img {
@@ -417,7 +550,7 @@
         }
 
         .win-title {
-            color: #ff69b4;
+            color: #ffd700;
             font-size: 36px;
             margin-bottom: 20px;
             animation: bounce 1s ease;
@@ -436,7 +569,7 @@
         }
 
         .see-you {
-            color: #ffb6c1;
+            color: #ffd700;
             font-size: 16px;
             font-style: italic;
             opacity: 0;
@@ -465,67 +598,46 @@
                 opacity: 0;
             }
         }
-
-        .combo-display {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 24px;
-            color: #10b981;
-            font-weight: bold;
-            text-shadow: 0 0 20px rgba(16, 185, 129, 0.8);
-            opacity: 0;
-            transition: all 0.3s ease;
-            z-index: 100;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 8px 16px;
-            border-radius: 10px;
-        }
-
-        .combo-display.show {
-            opacity: 1;
-            animation: comboPulse 0.5s ease;
-        }
-
-        @keyframes comboPulse {
-            0%, 100% { transform: translateX(-50%) scale(1); }
-            50% { transform: translateX(-50%) scale(1.2); }
-        }
     </style>
 </head>
 <body>
-    <!-- Floating hearts background -->
+    <!-- Floating items background -->
     <script>
-        const heartTypes = ['💕', '💖', '💗', '🧸'];
-        for (let i = 0; i < 15; i++) {
-            const heart = document.createElement('div');
-            heart.className = 'float-heart';
-            heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
-            heart.style.left = Math.random() * 100 + '%';
-            heart.style.animationDelay = Math.random() * 15 + 's';
-            heart.style.animationDuration = (12 + Math.random() * 8) + 's';
-            document.body.appendChild(heart);
+        const floatItems = ['💍', '🌹', '💕', '💝'];
+        for (let i = 0; i < 12; i++) {
+            const item = document.createElement('div');
+            item.className = 'float-item';
+            item.innerHTML = floatItems[Math.floor(Math.random() * floatItems.length)];
+            item.style.left = Math.random() * 100 + '%';
+            item.style.animationDelay = Math.random() * 20 + 's';
+            item.style.animationDuration = (16 + Math.random() * 8) + 's';
+            document.body.appendChild(item);
         }
     </script>
 
     <div class="container">
-        <div class="day-badge">DAY 4 OF 7 - TEDDY DAY</div>
-        <h1>Teddy Memory Match 🧸</h1>
-        <p class="subtitle">Match all the teddy pairs before time runs out!</p>
+        <div class="day-badge">DAY 5 OF 7 - PROPOSE DAY</div>
+        <h1>Rose Petal Path 💍</h1>
+        <p class="subtitle">Collect all items in each phase to unlock the ring!</p>
         
+        <!-- Phase Indicator -->
+        <div class="phase-indicator" id="phaseIndicator">
+            <div>Phase 1: Collect Roses 🌹</div>
+            <div class="phase-progress" id="phaseProgress"></div>
+        </div>
+
         <div class="stats">
             <div class="stat-box">
-                <div class="stat-label">MATCHES</div>
-                <div class="stat-value" id="score">0/9</div>
+                <div class="stat-label">LEVEL</div>
+                <div class="stat-value" id="levelDisplay">1/5</div>
             </div>
             <div class="stat-box">
-                <div class="stat-label">MOVES</div>
-                <div class="stat-value" id="moves">0</div>
+                <div class="stat-label">COLLECTED</div>
+                <div class="stat-value" id="collectedDisplay">0/4</div>
             </div>
             <div class="stat-box">
-                <div class="stat-label">STREAK</div>
-                <div class="stat-value" id="streak">0</div>
+                <div class="stat-label">STEPS</div>
+                <div class="stat-value" id="stepsDisplay">0</div>
             </div>
         </div>
 
@@ -534,29 +646,35 @@
         </div>
 
         <div class="game-area">
-            <div class="combo-display" id="comboDisplay"></div>
-            
-            <div class="preview-area" id="previewArea">
-                <div class="preview-label">🔍 MEMORIZE THESE TEDDIES (4 seconds):</div>
-                <div class="preview-cards" id="previewCards"></div>
+            <div class="level-display" id="levelTitle">Level 1: First Meeting 💕</div>
+            <div class="feedback-msg" id="feedbackMsg"></div>
+            <div class="maze-container" id="mazeContainer">
+                <div class="maze-grid" id="mazeGrid"></div>
+                <div class="player" id="player">💑</div>
             </div>
-
-            <div class="cards-grid" id="cardsGrid"></div>
         </div>
 
-        <button class="start-btn" id="startBtn" onclick="startGame()">Start Game 🎮</button>
-        <p class="hint">💡 Match pairs of identical teddies with accessories!</p>
+        <div class="controls">
+            <div class="control-btn empty"></div>
+            <button class="control-btn" id="upBtn" onclick="movePlayer('up')">▲</button>
+            <div class="control-btn empty"></div>
+            <button class="control-btn" id="leftBtn" onclick="movePlayer('left')">◀</button>
+            <button class="control-btn" id="downBtn" onclick="movePlayer('down')">▼</button>
+            <button class="control-btn" id="rightBtn" onclick="movePlayer('right')">▶</button>
+        </div>
+
+        <button class="start-btn" id="startBtn" onclick="startGame()">Start Journey 💍</button>
+        <p class="hint">💡 Phase 1: Collect all 🌹 roses (5)<br>Phase 2: Collect all 💕 hearts (5)<br>Phase 3: Collect all 💌 letters (5)<br>Then unlock the 💍 ring! Avoid ⚔️ thorns (-15s), use 🌀 portals!<br>⚠️ Each move costs 0.15s - plan your path!</p>
         <div class="progress" id="progress">Pieces unlocked: <span id="pieceCount">0</span> / 6</div>
     </div>
 
     <!-- Win Overlay -->
     <div class="win-overlay" id="winOverlay">
         <div class="win-content">
-            <div class="win-title">Perfect Match! 🧸✨</div>
+            <div class="win-title">Forever Yours! 💍✨</div>
             
-            <!-- Scratch card container -->
             <div class="scratch-card-container" id="scratchContainer">
-                <img src="piece4.1.jpg" alt="Hidden Image" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
+                <img src="pieces/piece5.1.png" alt="Hidden Image" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
                 <canvas id="scratchCanvas" width="250" height="250"></canvas>
             </div>
             
@@ -564,239 +682,583 @@
                 ✨ Scratch to reveal your surprise! ✨
             </p>
             
-            <!-- Image reveal container (hidden initially) -->
             <div class="piece-reveal" id="pieceReveal" style="display: none;">
-                <img src="pieces/piece4.1.png" alt="Puzzle Piece 4 - Cartoon" id="cartoonImage" class="fade-in">
-                <img src="pieces/piece4.2.png" alt="Puzzle Piece 4 - Real" id="realImage" class="hidden">
+                <img src="pieces/piece5.1.png" alt="Puzzle Piece 5 - Cartoon" id="cartoonImage" class="fade-in">
+                <img src="pieces/piece5.2.png" alt="Puzzle Piece 5 - Real" id="realImage" class="hidden">
             </div>
             
             <p class="win-message" id="winMessage" style="display: none;">
-                "You're my favorite teddy,<br>
-                the one I'd hug forever 🧸✨"
+                "Through every obstacle,<br>
+                I'll find my way to you.<br>
+                You're my forever destination."
             </p>
-
             
             <p class="win-message" id="pieceUnlocked" style="display: none;">
-                🧩 <strong>Piece 4/6 unlocked!</strong>
+                🧩 <strong>Piece 5/6 unlocked!</strong>
             </p>
             
-            <p class="see-you" id="seeYou" style="display: none;">Tomorrow, let's make a promise... 🤝</p>
+            <p class="see-you" id="seeYou" style="display: none;">Tomorrow, we celebrate our love... 💑</p>
         </div>
     </div>
 
     <script>
-        const GAME_DURATION = 60; // 60 seconds - slightly less time
-        const PAIRS_TO_MATCH = 9; // 9 pairs = 18 cards (one more pair)
-        const PREVIEW_TIME = 4000; // 4 seconds to memorize (less time)
+        const GRID_SIZE = 10;
+        const TOTAL_LEVELS = 5;
+        const TIME_PER_LEVEL = 45; // Reduced time for more challenge
         
-        const TEDDIES = ['🧸', '🐻', '🐻‍❄️', '🐼'];
-        const ACCESSORIES = ['🎀', '🎩', '👑', '🌸', '💖', '🎁', '⭐', '💝'];
-        
-        let gameActive = false;
-        let gameTime = GAME_DURATION;
-        let score = 0;
-        let moves = 0;
-        let streak = 0;
-        let flippedCards = [];
-        let matchedPairs = 0;
-        let cards = [];
-        let canFlip = false;
-        let countdownTimer = null;
+        const LEVEL_THEMES = [
+            { name: 'First Meeting', emoji: '💕' },
+            { name: 'Growing Closer', emoji: '💖' },
+            { name: 'Deep Connection', emoji: '💗' },
+            { name: 'The Question', emoji: '💍' },
+            { name: 'Forever Together', emoji: '👰‍♀️🤵' }
+        ];
 
-        const cardsGrid = document.getElementById('cardsGrid');
-        const previewArea = document.getElementById('previewArea');
-        const previewCards = document.getElementById('previewCards');
-        const scoreDisplay = document.getElementById('score');
-        const movesDisplay = document.getElementById('moves');
-        const streakDisplay = document.getElementById('streak');
+        const PHASES = [
+            { name: 'Collect Roses', emoji: '🌹', className: 'rose', count: 5 },
+            { name: 'Collect Hearts', emoji: '💕', className: 'heart', count: 5 },
+            { name: 'Collect Letters', emoji: '💌', className: 'letter', count: 5 }
+        ];
+
+        let gameActive = false;
+        let currentLevel = 1;
+        let currentPhase = 0;
+        let playerPos = { x: 0, y: 0 };
+        let goalPos = { x: 9, y: 9 };
+        let phaseItemsCollected = 0;
+        let totalSteps = 0;
+        let levelTime = TIME_PER_LEVEL;
+        let maze = [];
+        let phaseItems = [];
+        let thorns = [];
+        let portals = [];
+        let visited = new Set();
+        let countdownTimer = null;
+        let goalUnlocked = false;
+
+        const mazeGrid = document.getElementById('mazeGrid');
+        const player = document.getElementById('player');
+        const levelDisplay = document.getElementById('levelDisplay');
+        const levelTitle = document.getElementById('levelTitle');
+        const collectedDisplay = document.getElementById('collectedDisplay');
+        const stepsDisplay = document.getElementById('stepsDisplay');
         const timerFill = document.getElementById('timerFill');
         const startBtn = document.getElementById('startBtn');
-        const comboDisplay = document.getElementById('comboDisplay');
+        const feedbackMsg = document.getElementById('feedbackMsg');
+        const phaseIndicator = document.getElementById('phaseIndicator');
+        const phaseProgress = document.getElementById('phaseProgress');
 
-        // Scratch card variables
-        let scratchCanvas;
-        let scratchCtx;
-        let isScratching = false;
-        let scratchPercentage = 0;
+        let scratchCanvas, scratchCtx, isScratching = false, scratchPercentage = 0;
+
+        document.addEventListener('keydown', (e) => {
+            if (!gameActive) return;
+            e.preventDefault();
+            
+            if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') movePlayer('up');
+            if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') movePlayer('down');
+            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') movePlayer('left');
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') movePlayer('right');
+        });
 
         function startGame() {
-            gameActive = false;
-            gameTime = GAME_DURATION;
-            score = 0;
-            moves = 0;
-            streak = 0;
-            matchedPairs = 0;
-            flippedCards = [];
-            canFlip = false;
+            gameActive = true;
+            currentLevel = 1;
+            currentPhase = 0;
+            phaseItemsCollected = 0;
+            totalSteps = 0;
+            goalUnlocked = false;
             
-            updateScore();
-            updateMoves();
-            updateStreak();
+            updateDisplays();
+            updatePhaseIndicator();
             
             startBtn.disabled = true;
             startBtn.textContent = 'Playing...';
             
-            generateCards();
-            showPreview();
+            loadLevel(currentLevel);
         }
 
-        function generateCards() {
-            cards = [];
-            cardsGrid.innerHTML = '';
+        function loadLevel(level) {
+            levelTime = TIME_PER_LEVEL;
+            visited.clear();
+            currentPhase = 0;
+            phaseItemsCollected = 0;
+            goalUnlocked = false;
             
-            // Create pairs
-            const pairs = [];
-            for (let i = 0; i < PAIRS_TO_MATCH; i++) {
-                const teddy = TEDDIES[Math.floor(Math.random() * TEDDIES.length)];
-                const accessory = ACCESSORIES[i % ACCESSORIES.length];
-                const pair = { teddy, accessory, id: i };
-                pairs.push({ ...pair });
-                pairs.push({ ...pair });
-            }
+            levelDisplay.textContent = `${level}/${TOTAL_LEVELS}`;
+            levelTitle.textContent = `Level ${level}: ${LEVEL_THEMES[level - 1].name} ${LEVEL_THEMES[level - 1].emoji}`;
             
-            // Shuffle
-            shuffleArray(pairs);
+            generateMaze(level);
+            renderMaze();
+            updatePhaseIndicator();
+            updateDisplays();
             
-            // Create card elements
-            pairs.forEach((pair, index) => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.dataset.id = pair.id;
-                card.dataset.teddy = pair.teddy;
-                card.dataset.accessory = pair.accessory;
-                
-                card.innerHTML = `
-                    <div class="card-front"></div>
-                    <div class="card-back">
-                        <div class="card-teddy">${pair.teddy}</div>
-                        <div class="card-accessory">${pair.accessory}</div>
-                    </div>
-                `;
-                
-                card.addEventListener('click', () => flipCard(card, index));
-                cardsGrid.appendChild(card);
-                cards.push(card);
-            });
-        }
-
-        function showPreview() {
-            previewArea.style.display = 'block';
-            previewCards.innerHTML = '';
-            
-            // Show unique teddies
-            const uniquePairs = [];
-            const seen = new Set();
-            
-            cards.forEach(card => {
-                const key = card.dataset.teddy + card.dataset.accessory;
-                if (!seen.has(key)) {
-                    seen.add(key);
-                    uniquePairs.push({
-                        teddy: card.dataset.teddy,
-                        accessory: card.dataset.accessory
-                    });
-                }
-            });
-            
-            uniquePairs.forEach(pair => {
-                const preview = document.createElement('div');
-                preview.className = 'preview-card';
-                preview.innerHTML = `
-                    ${pair.teddy}
-                    <span class="preview-accessory">${pair.accessory}</span>
-                `;
-                previewCards.appendChild(preview);
-            });
-            
-            // Hide preview and start game after 4 seconds
-            setTimeout(() => {
-                previewArea.style.display = 'none';
-                startGameplay();
-            }, PREVIEW_TIME);
-        }
-
-        function startGameplay() {
-            gameActive = true;
-            canFlip = true;
-            
-            // Start countdown
+            if (countdownTimer) clearInterval(countdownTimer);
             countdownTimer = setInterval(updateTimer, 100);
         }
 
-        function flipCard(card, index) {
-            if (!canFlip || !gameActive) return;
-            if (card.classList.contains('flipped') || card.classList.contains('matched')) return;
-            if (flippedCards.length >= 2) return;
+        function generateMaze(level) {
+            // Initialize empty maze
+            maze = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill(0));
             
-            card.classList.add('flipped');
-            flippedCards.push({ card, index });
+            playerPos = { x: 0, y: 0 };
+            goalPos = { x: GRID_SIZE - 1, y: GRID_SIZE - 1 };
             
-            if (flippedCards.length === 2) {
-                canFlip = false;
-                moves++;
-                updateMoves();
-                
-                setTimeout(checkMatch, 800);
+            // Add walls with controlled density
+            const wallDensity = 0.15 + (level * 0.03); // Increased base density for more challenge
+            for (let y = 0; y < GRID_SIZE; y++) {
+                for (let x = 0; x < GRID_SIZE; x++) {
+                    if ((x === 0 && y === 0) || (x === GRID_SIZE - 1 && y === GRID_SIZE - 1)) continue;
+                    if (Math.random() < wallDensity) {
+                        maze[y][x] = 1;
+                    }
+                }
+            }
+            
+            // CRITICAL: Ensure there's always a path from start to goal
+            ensurePathExists();
+            
+            // Place phase items (roses, hearts, letters) - ensure they're all reachable
+            phaseItems = [];
+            const itemCount = PHASES[currentPhase].count;
+            let placed = 0;
+            let attempts = 0;
+            
+            while (placed < itemCount && attempts < 500) {
+                const pos = getRandomEmptyCell();
+                if (pos && isPositionReachable(pos)) {
+                    phaseItems.push(pos);
+                    placed++;
+                }
+                attempts++;
+            }
+            
+            // If we still don't have enough items, clear some walls and place items
+            while (placed < itemCount) {
+                const pos = getRandomEmptyCell();
+                if (pos) {
+                    // Clear walls around this position to ensure reachability
+                    clearWallsAroundPosition(pos);
+                    if (isPositionReachable(pos)) {
+                        phaseItems.push(pos);
+                        placed++;
+                    }
+                }
+                attempts++;
+                if (attempts > 1000) break; // Safety break
+            }
+            
+            // Place thorns (obstacles to avoid, but shouldn't block critical items)
+            thorns = [];
+            const thornCount = Math.max(2, Math.floor(level * 1.2));
+            for (let i = 0; i < thornCount; i++) {
+                let pos = getRandomEmptyCell();
+                if (pos && isPositionReachable(pos)) {
+                    // Make sure placing this thorn doesn't make items unreachable
+                    const tempMaze = maze[pos.y][pos.x];
+                    maze[pos.y][pos.x] = 1; // Temporarily block it
+                    
+                    // Check if all items are still reachable
+                    let allItemsReachable = true;
+                    for (const item of phaseItems) {
+                        if (!isPositionReachable(item)) {
+                            allItemsReachable = false;
+                            break;
+                        }
+                    }
+                    
+                    if (allItemsReachable && hasPathToGoal()) {
+                        // Safe to place thorn here (as an empty cell, not wall)
+                        maze[pos.y][pos.x] = tempMaze; // Restore
+                        thorns.push(pos);
+                    } else {
+                        // This would block critical paths, restore and skip
+                        maze[pos.y][pos.x] = tempMaze;
+                    }
+                }
+            }
+            
+            // Place portals (helpful for navigation, but rare)
+            portals = [];
+            if (level >= 3 && Math.random() < 0.6) { // Only 60% chance, and only on level 3+
+                for (let i = 0; i < 1; i++) {
+                    let pos1 = getRandomEmptyCell();
+                    let pos2 = getRandomEmptyCell();
+                    if (pos1 && pos2) {
+                        portals.push({ from: pos1, to: pos2 });
+                        portals.push({ from: pos2, to: pos1 });
+                    }
+                }
             }
         }
 
-        function checkMatch() {
-            const [first, second] = flippedCards;
+        function ensurePathExists() {
+            // Use BFS to check if path exists
+            let pathExists = hasPathToGoal();
             
-            if (first.card.dataset.id === second.card.dataset.id) {
-                // Match!
-                first.card.classList.add('matched');
-                second.card.classList.add('matched');
-                matchedPairs++;
-                streak++;
-                
-                updateScore();
-                updateStreak();
-                
-                if (streak >= 3) {
-                    showCombo();
+            // If no path, remove walls until we have one
+            let attempts = 0;
+            while (!pathExists && attempts < 100) {
+                // Find walls that are blocking
+                for (let y = 0; y < GRID_SIZE; y++) {
+                    for (let x = 0; x < GRID_SIZE; x++) {
+                        if (maze[y][x] === 1) {
+                            // Try removing this wall
+                            maze[y][x] = 0;
+                            if (hasPathToGoal()) {
+                                pathExists = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (pathExists) break;
                 }
-                
-                createParticles(first.card);
-                createParticles(second.card);
-                
-                if (matchedPairs >= PAIRS_TO_MATCH) {
-                    winGame();
-                }
-            } else {
-                // No match
-                setTimeout(() => {
-                    first.card.classList.remove('flipped');
-                    second.card.classList.remove('flipped');
-                }, 400);
-                
-                streak = 0;
-                updateStreak();
+                attempts++;
             }
             
-            flippedCards = [];
-            canFlip = true;
+            // If still no path, create a simple corridor
+            if (!pathExists) {
+                for (let i = 0; i < GRID_SIZE; i++) {
+                    maze[i][0] = 0; // Clear left column
+                    maze[GRID_SIZE - 1][i] = 0; // Clear bottom row
+                }
+            }
         }
 
-        function showCombo() {
-            comboDisplay.textContent = `🔥 ${streak} STREAK! +${streak} bonus!`;
-            comboDisplay.classList.add('show');
-            setTimeout(() => comboDisplay.classList.remove('show'), 1500);
-        }
-
-        function createParticles(element) {
-            const rect = element.getBoundingClientRect();
-            const particles = ['✨', '💕', '⭐', '💖'];
+        function hasPathToGoal() {
+            const queue = [{ x: 0, y: 0 }];
+            const visited = new Set(['0,0']);
             
-            for (let i = 0; i < 6; i++) {
+            while (queue.length > 0) {
+                const current = queue.shift();
+                
+                if (current.x === GRID_SIZE - 1 && current.y === GRID_SIZE - 1) {
+                    return true;
+                }
+                
+                const neighbors = [
+                    { x: current.x + 1, y: current.y },
+                    { x: current.x - 1, y: current.y },
+                    { x: current.x, y: current.y + 1 },
+                    { x: current.x, y: current.y - 1 }
+                ];
+                
+                for (const next of neighbors) {
+                    if (next.x >= 0 && next.x < GRID_SIZE && next.y >= 0 && next.y < GRID_SIZE) {
+                        const key = `${next.x},${next.y}`;
+                        if (!visited.has(key) && maze[next.y][next.x] === 0) {
+                            visited.add(key);
+                            queue.push(next);
+                        }
+                    }
+                }
+            }
+            
+            return false;
+        }
+
+        function isPositionReachable(pos) {
+            // Check if position is reachable from player start (0,0)
+            const queue = [{ x: 0, y: 0 }];
+            const visited = new Set(['0,0']);
+            
+            while (queue.length > 0) {
+                const current = queue.shift();
+                
+                if (current.x === pos.x && current.y === pos.y) {
+                    return true;
+                }
+                
+                const neighbors = [
+                    { x: current.x + 1, y: current.y },
+                    { x: current.x - 1, y: current.y },
+                    { x: current.x, y: current.y + 1 },
+                    { x: current.x, y: current.y - 1 }
+                ];
+                
+                for (const next of neighbors) {
+                    if (next.x >= 0 && next.x < GRID_SIZE && next.y >= 0 && next.y < GRID_SIZE) {
+                        const key = `${next.x},${next.y}`;
+                        if (!visited.has(key) && maze[next.y][next.x] === 0) {
+                            visited.add(key);
+                            queue.push(next);
+                        }
+                    }
+                }
+            }
+            
+            return false;
+        }
+
+        function clearWallsAroundPosition(pos) {
+            // Clear walls in a cross pattern around the position to ensure access
+            const directions = [
+                { x: 0, y: -1 }, { x: 0, y: 1 },
+                { x: -1, y: 0 }, { x: 1, y: 0 }
+            ];
+            
+            for (const dir of directions) {
+                const newX = pos.x + dir.x;
+                const newY = pos.y + dir.y;
+                if (newX >= 0 && newX < GRID_SIZE && newY >= 0 && newY < GRID_SIZE) {
+                    maze[newY][newX] = 0;
+                }
+            }
+        }
+
+        function isOnPathToGoal(pos) {
+            // Check if position is reasonably on a path to goal
+            const distToGoal = Math.abs(pos.x - goalPos.x) + Math.abs(pos.y - goalPos.y);
+            const distFromStart = Math.abs(pos.x - playerPos.x) + Math.abs(pos.y - playerPos.y);
+            return distFromStart > 2 && distToGoal > 2 && distToGoal < GRID_SIZE * 1.5;
+        }
+
+        function getRandomEmptyCell() {
+            let attempts = 0;
+            while (attempts < 100) {
+                const x = Math.floor(Math.random() * GRID_SIZE);
+                const y = Math.floor(Math.random() * GRID_SIZE);
+                
+                if (maze[y][x] === 0 && 
+                    !(x === 0 && y === 0) && 
+                    !(x === GRID_SIZE - 1 && y === GRID_SIZE - 1) &&
+                    !phaseItems.find(r => r.x === x && r.y === y) &&
+                    !thorns.find(t => t.x === x && t.y === y)) {
+                    return { x, y };
+                }
+                attempts++;
+            }
+            return null;
+        }
+
+        function renderMaze() {
+            mazeGrid.innerHTML = '';
+            
+            for (let y = 0; y < GRID_SIZE; y++) {
+                for (let x = 0; x < GRID_SIZE; x++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'maze-cell';
+                    cell.dataset.x = x;
+                    cell.dataset.y = y;
+                    
+                    if (maze[y][x] === 1) {
+                        cell.classList.add('wall');
+                    }
+                    
+                    // Goal (ring)
+                    if (x === goalPos.x && y === goalPos.y) {
+                        if (goalUnlocked) {
+                            cell.innerHTML = '<div class="cell-content">💍</div>';
+                            cell.classList.add('goal-unlocked');
+                        } else {
+                            cell.innerHTML = '<div class="cell-content">🔒</div>';
+                            cell.classList.add('goal-locked');
+                        }
+                    }
+                    
+                    // Phase items (roses, hearts, letters)
+                    if (phaseItems.find(r => r.x === x && r.y === y)) {
+                        cell.innerHTML = `<div class="cell-content">${PHASES[currentPhase].emoji}</div>`;
+                        cell.classList.add(PHASES[currentPhase].className);
+                    }
+                    
+                    // Thorns
+                    if (thorns.find(t => t.x === x && t.y === y)) {
+                        cell.innerHTML = '<div class="cell-content">⚔️</div>';
+                        cell.classList.add('thorn');
+                    }
+                    
+                    // Portals
+                    const portal = portals.find(p => p.from.x === x && p.from.y === y);
+                    if (portal) {
+                        cell.innerHTML = '<div class="cell-content">🌀</div>';
+                        cell.classList.add('portal');
+                    }
+                    
+                    mazeGrid.appendChild(cell);
+                }
+            }
+            
+            updatePlayerPosition();
+        }
+
+        function updatePhaseIndicator() {
+            const phase = PHASES[currentPhase];
+            phaseIndicator.querySelector('div:first-child').textContent = 
+                `Phase ${currentPhase + 1}: ${phase.name} ${phase.emoji}`;
+            
+            phaseProgress.innerHTML = '';
+            for (let i = 0; i < phase.count; i++) {
+                const item = document.createElement('div');
+                item.className = 'phase-item';
+                if (i < phaseItemsCollected) {
+                    item.classList.add('collected');
+                    item.innerHTML = '✓';
+                } else {
+                    item.innerHTML = phase.emoji;
+                }
+                phaseProgress.appendChild(item);
+            }
+        }
+
+        function movePlayer(direction) {
+            if (!gameActive) return;
+            
+            let newX = playerPos.x;
+            let newY = playerPos.y;
+            
+            if (direction === 'up') newY--;
+            if (direction === 'down') newY++;
+            if (direction === 'left') newX--;
+            if (direction === 'right') newX++;
+            
+            if (newX < 0 || newX >= GRID_SIZE || newY < 0 || newY >= GRID_SIZE) return;
+            if (maze[newY][newX] === 1) return;
+            
+            playerPos.x = newX;
+            playerPos.y = newY;
+            totalSteps++;
+            
+            // Time penalty for each move to add pressure
+            levelTime -= 0.15;
+            
+            const key = `${newX},${newY}`;
+            if (!visited.has(key)) {
+                visited.add(key);
+                const cell = document.querySelector(`[data-x="${newX}"][data-y="${newY}"]`);
+                if (cell && !cell.classList.contains('wall')) cell.classList.add('visited');
+            }
+            
+            updatePlayerPosition();
+            updateDisplays();
+            checkCollisions();
+        }
+
+        function updatePlayerPosition() {
+            const cellSize = mazeGrid.offsetWidth / GRID_SIZE;
+            player.style.left = (playerPos.x * cellSize + cellSize / 2) + 'px';
+            player.style.top = (playerPos.y * cellSize + cellSize / 2) + 'px';
+        }
+
+        function checkCollisions() {
+            // Check phase item collection
+            const itemIndex = phaseItems.findIndex(r => r.x === playerPos.x && r.y === playerPos.y);
+            if (itemIndex !== -1) {
+                phaseItems.splice(itemIndex, 1);
+                phaseItemsCollected++;
+                levelTime += 3; // Bonus time for collecting items
+                updateDisplays();
+                updatePhaseIndicator();
+                
+                const phase = PHASES[currentPhase];
+                showFeedback(`${phase.emoji} Collected! +3s (${phaseItemsCollected}/${phase.count})`, false);
+                createParticles(phase.emoji);
+                
+                const cell = document.querySelector(`[data-x="${playerPos.x}"][data-y="${playerPos.y}"]`);
+                if (cell) {
+                    cell.innerHTML = '';
+                    cell.classList.remove(phase.className);
+                }
+                
+                // Check if phase is complete
+                if (phaseItemsCollected >= phase.count) {
+                    currentPhase++;
+                    phaseItemsCollected = 0;
+                    
+                    if (currentPhase >= PHASES.length) {
+                        // All phases complete - unlock goal
+                        goalUnlocked = true;
+                        showFeedback('All items collected! 💍 Ring Unlocked!', false);
+                        levelTime += 5; // Reduced bonus time for challenge
+                        renderMaze(); // Re-render to show unlocked goal
+                    } else {
+                        // Move to next phase
+                        showFeedback(`Phase ${currentPhase} Complete! 🎉 Next: ${PHASES[currentPhase].name}`, false);
+                        levelTime += 5; // Reduced bonus time for completing phase
+                        
+                        // Generate new items for next phase - ensure all are reachable
+                        phaseItems = [];
+                        const itemCount = PHASES[currentPhase].count;
+                        let placed = 0;
+                        let attempts = 0;
+                        
+                        while (placed < itemCount && attempts < 500) {
+                            const pos = getRandomEmptyCell();
+                            if (pos && isPositionReachable(pos)) {
+                                phaseItems.push(pos);
+                                placed++;
+                            }
+                            attempts++;
+                        }
+                        
+                        // If still not enough, clear walls and place
+                        while (placed < itemCount && attempts < 1000) {
+                            const pos = getRandomEmptyCell();
+                            if (pos) {
+                                clearWallsAroundPosition(pos);
+                                if (isPositionReachable(pos)) {
+                                    phaseItems.push(pos);
+                                    placed++;
+                                }
+                            }
+                            attempts++;
+                        }
+                        
+                        updatePhaseIndicator();
+                        renderMaze();
+                    }
+                }
+            }
+            
+            // Check thorns
+            const thornIndex = thorns.findIndex(t => t.x === playerPos.x && t.y === playerPos.y);
+            if (thornIndex !== -1) {
+                thorns.splice(thornIndex, 1);
+                showFeedback('-15 seconds! ⚔️', true);
+                levelTime -= 15; // Increased penalty
+                createParticles('💔');
+                
+                const cell = document.querySelector(`[data-x="${playerPos.x}"][data-y="${playerPos.y}"]`);
+                if (cell) {
+                    cell.innerHTML = '';
+                    cell.classList.remove('thorn');
+                }
+            }
+            
+            // Check portals
+            const portal = portals.find(p => p.from.x === playerPos.x && p.from.y === playerPos.y);
+            if (portal) {
+                playerPos.x = portal.to.x;
+                playerPos.y = portal.to.y;
+                updatePlayerPosition();
+                showFeedback('Teleported! 🌀', false);
+                createParticles('✨');
+            }
+            
+            // Check goal
+            if (goalUnlocked && playerPos.x === goalPos.x && playerPos.y === goalPos.y) {
+                nextLevel();
+            } else if (!goalUnlocked && playerPos.x === goalPos.x && playerPos.y === goalPos.y) {
+                showFeedback('🔒 Collect all items first!', true);
+            }
+        }
+
+        function showFeedback(text, isNegative) {
+            feedbackMsg.textContent = text;
+            feedbackMsg.style.color = isNegative ? '#ef4444' : '#10b981';
+            feedbackMsg.classList.add('show');
+            setTimeout(() => feedbackMsg.classList.remove('show'), 2000);
+        }
+
+        function createParticles(emoji) {
+            for (let i = 0; i < 8; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
-                particle.innerHTML = particles[Math.floor(Math.random() * particles.length)];
-                particle.style.left = rect.left + rect.width / 2 + 'px';
-                particle.style.top = rect.top + rect.height / 2 + 'px';
+                particle.innerHTML = emoji;
+                particle.style.left = '50%';
+                particle.style.top = '50%';
                 
-                const angle = (Math.PI * 2 * i) / 6;
-                const distance = 40 + Math.random() * 40;
+                const angle = (Math.PI * 2 * i) / 8;
+                const distance = 60 + Math.random() * 60;
                 particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
                 particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
                 
@@ -805,63 +1267,56 @@
             }
         }
 
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
-
-        function updateScore() {
-            scoreDisplay.textContent = `${matchedPairs}/${PAIRS_TO_MATCH}`;
-        }
-
-        function updateMoves() {
-            movesDisplay.textContent = moves;
-        }
-
-        function updateStreak() {
-            streakDisplay.textContent = streak;
-            if (streak >= 3) {
-                streakDisplay.style.color = '#10b981';
+        function nextLevel() {
+            clearInterval(countdownTimer);
+            
+            if (currentLevel >= TOTAL_LEVELS) {
+                winGame();
             } else {
-                streakDisplay.style.color = '#fff';
+                currentLevel++;
+                showFeedback(`Level ${currentLevel - 1} Complete! 💕`, false);
+                setTimeout(() => loadLevel(currentLevel), 2000);
             }
+        }
+
+        function updateDisplays() {
+            const phase = PHASES[currentPhase] || PHASES[PHASES.length - 1];
+            collectedDisplay.textContent = `${phaseItemsCollected}/${phase.count}`;
+            stepsDisplay.textContent = totalSteps;
         }
 
         function updateTimer() {
-            gameTime -= 0.1;
-            const percentage = (gameTime / GAME_DURATION) * 100;
+            levelTime -= 0.1;
+            const percentage = Math.max(0, (levelTime / TIME_PER_LEVEL) * 100);
             timerFill.style.width = percentage + '%';
             
-            if (gameTime <= 0) {
+            if (levelTime <= 0) {
                 gameOver();
             }
         }
 
         function gameOver() {
             gameActive = false;
-            canFlip = false;
             clearInterval(countdownTimer);
             
             startBtn.disabled = false;
-            startBtn.textContent = 'Try Again 🎮';
+            startBtn.textContent = 'Try Again 💍';
+            
+            showFeedback('Time\'s Up! 💔', true);
         }
 
         function winGame() {
             gameActive = false;
-            canFlip = false;
             clearInterval(countdownTimer);
             
-            // Save progress
-            localStorage.setItem('piece4', 'true');
-            localStorage.setItem('day4_completed', 'true');
+            localStorage.setItem('piece5', 'true');
+            localStorage.setItem('day5_completed', 'true');
             
             setTimeout(() => {
                 document.getElementById('winOverlay').classList.add('show');
                 initScratchCard();
                 createCelebration();
-            }, 800);
+            }, 1000);
             
             updateProgress();
         }
@@ -870,30 +1325,24 @@
             scratchCanvas = document.getElementById('scratchCanvas');
             scratchCtx = scratchCanvas.getContext('2d');
             
-            // Draw scratch-off coating
-            scratchCtx.fillStyle = '#ff69b4';
+            const gradient = scratchCtx.createLinearGradient(0, 0, 250, 250);
+            gradient.addColorStop(0, '#ffd700');
+            gradient.addColorStop(1, '#ff6b9d');
+            scratchCtx.fillStyle = gradient;
             scratchCtx.fillRect(0, 0, 250, 250);
             
-            // Add texture
-            scratchCtx.fillStyle = '#ff1493';
+            scratchCtx.fillStyle = 'rgba(255, 255, 255, 0.1)';
             for (let i = 0; i < 100; i++) {
-                scratchCtx.fillRect(
-                    Math.random() * 250,
-                    Math.random() * 250,
-                    Math.random() * 3,
-                    Math.random() * 3
-                );
+                scratchCtx.fillRect(Math.random() * 250, Math.random() * 250, Math.random() * 3, Math.random() * 3);
             }
             
-            // Add "Scratch here" text
             scratchCtx.fillStyle = '#ffffff';
             scratchCtx.font = 'bold 24px Georgia';
             scratchCtx.textAlign = 'center';
             scratchCtx.fillText('Scratch Here!', 125, 115);
             scratchCtx.font = '20px Georgia';
-            scratchCtx.fillText('🧸', 125, 145);
+            scratchCtx.fillText('💍', 125, 145);
             
-            // Add scratch event listeners
             scratchCanvas.addEventListener('mousedown', startScratch);
             scratchCanvas.addEventListener('mousemove', scratch);
             scratchCanvas.addEventListener('mouseup', stopScratch);
@@ -943,20 +1392,16 @@
         }
 
         function revealImage() {
-            // Remove scratch card
             document.getElementById('scratchContainer').classList.add('hidden');
             document.getElementById('scratchInstruction').classList.add('hidden');
             
-            // Show piece reveal
             const pieceReveal = document.getElementById('pieceReveal');
             pieceReveal.style.display = 'block';
             
-            // Show messages
             document.getElementById('winMessage').style.display = 'block';
             document.getElementById('pieceUnlocked').style.display = 'block';
             document.getElementById('seeYou').style.display = 'block';
             
-            // Transition to real image after 3 seconds
             setTimeout(() => {
                 const cartoonImage = document.getElementById('cartoonImage');
                 const realImage = document.getElementById('realImage');
@@ -972,7 +1417,7 @@
                 for (let i = 0; i < 3; i++) {
                     const confetti = document.createElement('div');
                     confetti.className = 'particle';
-                    confetti.innerHTML = ['🧸', '💕', '🎀', '✨'][Math.floor(Math.random() * 4)];
+                    confetti.innerHTML = ['💍', '💕', '🌹', '✨'][Math.floor(Math.random() * 4)];
                     confetti.style.left = Math.random() * window.innerWidth + 'px';
                     confetti.style.top = '0px';
                     confetti.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
@@ -996,7 +1441,6 @@
             document.getElementById('pieceCount').textContent = count;
         }
 
-        // Initialize
         updateProgress();
     </script>
 </body>

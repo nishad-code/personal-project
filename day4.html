@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 4 - Teddy Memory Match 🧸</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Floating hearts */
+        .float-heart {
+            position: absolute;
+            font-size: 25px;
+            opacity: 0.15;
+            animation: heartFloat 15s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes heartFloat {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.15;
+            }
+            90% {
+                opacity: 0.15;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .day-badge {
+            display: inline-block;
+            background: rgba(255, 182, 193, 0.3);
+            border: 2px solid #ff69b4;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 105, 180, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 105, 180, 0.8); }
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 32px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+        }
+
+        .subtitle {
+            color: #ffb6c1;
+            font-size: 16px;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .stat-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 105, 180, 0.4);
+            border-radius: 15px;
+            padding: 12px;
+            flex: 1;
+        }
+
+        .stat-label {
+            color: #ffb6c1;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+        }
+
+        .timer-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 2px solid rgba(255, 105, 180, 0.3);
+        }
+
+        .timer-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff69b4, #ff1493);
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.8);
+        }
+
+        .game-area {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            border: 3px solid rgba(255, 105, 180, 0.5);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            min-height: 480px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            border-radius: 15px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card.matched {
+            animation: matchPulse 0.6s ease;
+            border-color: #10b981;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
+        }
+
+        @keyframes matchPulse {
+            0%, 100% { transform: scale(1) rotateY(180deg); }
+            50% { transform: scale(1.15) rotateY(180deg); }
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 38px;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-front::before {
+            content: '?';
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 42px;
+            font-weight: bold;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #fff, #ffe4e9);
+            transform: rotateY(180deg);
+            position: relative;
+        }
+
+        .card-teddy {
+            font-size: 38px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+        }
+
+        .card-accessory {
+            position: absolute;
+            font-size: 19px;
+            top: 6px;
+            right: 6px;
+        }
+
+        .preview-area {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(255, 105, 180, 0.5);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .preview-label {
+            color: #ffb6c1;
+            font-size: 13px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .preview-cards {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .preview-card {
+            background: linear-gradient(135deg, #fff, #ffe4e9);
+            border: 2px solid rgba(255, 105, 180, 0.5);
+            border-radius: 12px;
+            padding: 12px 18px;
+            font-size: 35px;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .preview-accessory {
+            position: absolute;
+            font-size: 18px;
+            top: 3px;
+            right: 3px;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            border-radius: 30px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 105, 180, 0.4);
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 25px rgba(255, 105, 180, 0.6);
+        }
+
+        .start-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .hint {
+            color: #ffb6c1;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .progress {
+            margin-top: 20px;
+            color: #ffb6c1;
+            font-size: 14px;
+        }
+
+        /* Win overlay */
+        .win-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .win-overlay.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .win-content {
+            text-align: center;
+            padding: 40px;
+            max-width: 400px;
+            animation: slideUp 0.8s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Scratch card styles */
+        .scratch-card-container {
+            width: 250px;
+            height: 250px;
+            margin: 30px auto;
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 0 40px rgba(255, 105, 180, 0.6);
+            animation: pieceGlow 2s ease-in-out infinite;
+        }
+
+        .scratch-card-container.hidden {
+            display: none;
+        }
+
+        #scratchCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 15px;
+            cursor: grab;
+            z-index: 2;
+        }
+
+        #scratchCanvas:active {
+            cursor: grabbing;
+        }
+
+        .scratch-instruction {
+            color: #ffb6c1;
+            font-size: 16px;
+            margin-top: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .scratch-instruction.hidden {
+            display: none;
+        }
+
+        .piece-reveal {
+            width: 250px;
+            height: 250px;
+            margin: 30px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(255, 105, 180, 0.6);
+            animation: pieceGlow 2s ease-in-out infinite;
+            position: relative;
+        }
+
+        @keyframes pieceGlow {
+            0%, 100% { box-shadow: 0 0 40px rgba(255, 105, 180, 0.6); }
+            50% { box-shadow: 0 0 60px rgba(255, 105, 180, 0.9); }
+        }
+
+        .piece-reveal img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .piece-reveal img.hidden {
+            opacity: 0;
+        }
+
+        .piece-reveal img.fade-in {
+            animation: fadeInImage 1s ease forwards;
+        }
+
+        @keyframes fadeInImage {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .win-title {
+            color: #ff69b4;
+            font-size: 36px;
+            margin-bottom: 20px;
+            animation: bounce 1s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .win-message {
+            color: #fff;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .see-you {
+            color: #ffb6c1;
+            font-size: 16px;
+            font-style: italic;
+            opacity: 0;
+            animation: fadeInDelayed 1s ease 2s forwards;
+        }
+
+        @keyframes fadeInDelayed {
+            to { opacity: 1; }
+        }
+
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            font-size: 20px;
+            animation: particleFloat 3s ease-out forwards;
+            z-index: 200;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .combo-display {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: #10b981;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(16, 185, 129, 0.8);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 16px;
+            border-radius: 10px;
+        }
+
+        .combo-display.show {
+            opacity: 1;
+            animation: comboPulse 0.5s ease;
+        }
+
+        @keyframes comboPulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts background -->
+    <script>
+        const heartTypes = ['💕', '💖', '💗', '🧸'];
+        for (let i = 0; i < 15; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'float-heart';
+            heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 15 + 's';
+            heart.style.animationDuration = (12 + Math.random() * 8) + 's';
+            document.body.appendChild(heart);
+        }
+    </script>
+
+    <div class="container">
+        <div class="day-badge">DAY 4 OF 7 - TEDDY DAY</div>
+        <h1>Teddy Memory Match 🧸</h1>
+        <p class="subtitle">Match all the teddy pairs before time runs out!</p>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-label">MATCHES</div>
+                <div class="stat-value" id="score">0/9</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">MOVES</div>
+                <div class="stat-value" id="moves">0</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">STREAK</div>
+                <div class="stat-value" id="streak">0</div>
+            </div>
+        </div>
+
+        <div class="timer-bar">
+            <div class="timer-fill" id="timerFill" style="width: 100%;"></div>
+        </div>
+
+        <div class="game-area">
+            <div class="combo-display" id="comboDisplay"></div>
+            
+            <div class="preview-area" id="previewArea">
+                <div class="preview-label">🔍 MEMORIZE THESE TEDDIES (4 seconds):</div>
+                <div class="preview-cards" id="previewCards"></div>
+            </div>
+
+            <div class="cards-grid" id="cardsGrid"></div>
+        </div>
+
+        <button class="start-btn" id="startBtn" onclick="startGame()">Start Game 🎮</button>
+        <p class="hint">💡 Match pairs of identical teddies with accessories!</p>
+        <div class="progress" id="progress">Pieces unlocked: <span id="pieceCount">0</span> / 6</div>
+    </div>
+
+    <!-- Win Overlay -->
+    <div class="win-overlay" id="winOverlay">
+        <div class="win-content">
+            <div class="win-title">Perfect Match! 🧸✨</div>
+            
+            <!-- Scratch card container -->
+            <div class="scratch-card-container" id="scratchContainer">
+                <img src="piece4.1.jpg" alt="Hidden Image" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
+                <canvas id="scratchCanvas" width="250" height="250"></canvas>
+            </div>
+            
+            <p class="scratch-instruction" id="scratchInstruction">
+                ✨ Scratch to reveal your surprise! ✨
+            </p>
+            
+            <!-- Image reveal container (hidden initially) -->
+            <div class="piece-reveal" id="pieceReveal" style="display: none;">
+                <img src="pieces/piece4.1.png" alt="Puzzle Piece 4 - Cartoon" id="cartoonImage" class="fade-in">
+                <img src="pieces/piece4.2.png" alt="Puzzle Piece 4 - Real" id="realImage" class="hidden">
+            </div>
+            
+            <p class="win-message" id="winMessage" style="display: none;">
+                "You're my favorite teddy,<br>
+                the one I'd hug forever 🧸✨"
+            </p>
+
+            
+            <p class="win-message" id="pieceUnlocked" style="display: none;">
+                🧩 <strong>Piece 4/6 unlocked!</strong>
+            </p>
+            
+            <p class="see-you" id="seeYou" style="display: none;">Tomorrow, let's make a promise... 🤝</p>
+        </div>
+    </div>
+
+    <script>
+        const GAME_DURATION = 60; // 60 seconds - slightly less time
+        const PAIRS_TO_MATCH = 9; // 9 pairs = 18 cards (one more pair)
+        const PREVIEW_TIME = 4000; // 4 seconds to memorize (less time)
+        
+        const TEDDIES = ['🧸', '🐻', '🐻‍❄️', '🐼'];
+        const ACCESSORIES = ['🎀', '🎩', '👑', '🌸', '💖', '🎁', '⭐', '💝'];
+        
+        let gameActive = false;
+        let gameTime = GAME_DURATION;
+        let score = 0;
+        let moves = 0;
+        let streak = 0;
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let cards = [];
+        let canFlip = false;
+        let countdownTimer = null;
+
+        const cardsGrid = document.getElementById('cardsGrid');
+        const previewArea = document.getElementById('previewArea');
+        const previewCards = document.getElementById('previewCards');
+        const scoreDisplay = document.getElementById('score');
+        const movesDisplay = document.getElementById('moves');
+        const streakDisplay = document.getElementById('streak');
+        const timerFill = document.getElementById('timerFill');
+        const startBtn = document.getElementById('startBtn');
+        const comboDisplay = document.getElementById('comboDisplay');
+
+        // Scratch card variables
+        let scratchCanvas;
+        let scratchCtx;
+        let isScratching = false;
+        let scratchPercentage = 0;
+
+        function startGame() {
+            gameActive = false;
+            gameTime = GAME_DURATION;
+            score = 0;
+            moves = 0;
+            streak = 0;
+            matchedPairs = 0;
+            flippedCards = [];
+            canFlip = false;
+            
+            updateScore();
+            updateMoves();
+            updateStreak();
+            
+            startBtn.disabled = true;
+            startBtn.textContent = 'Playing...';
+            
+            generateCards();
+            showPreview();
+        }
+
+        function generateCards() {
+            cards = [];
+            cardsGrid.innerHTML = '';
+            
+            // Create pairs
+            const pairs = [];
+            for (let i = 0; i < PAIRS_TO_MATCH; i++) {
+                const teddy = TEDDIES[Math.floor(Math.random() * TEDDIES.length)];
+                const accessory = ACCESSORIES[i % ACCESSORIES.length];
+                const pair = { teddy, accessory, id: i };
+                pairs.push({ ...pair });
+                pairs.push({ ...pair });
+            }
+            
+            // Shuffle
+            shuffleArray(pairs);
+            
+            // Create card elements
+            pairs.forEach((pair, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.dataset.id = pair.id;
+                card.dataset.teddy = pair.teddy;
+                card.dataset.accessory = pair.accessory;
+                
+                card.innerHTML = `
+                    <div class="card-front"></div>
+                    <div class="card-back">
+                        <div class="card-teddy">${pair.teddy}</div>
+                        <div class="card-accessory">${pair.accessory}</div>
+                    </div>
+                `;
+                
+                card.addEventListener('click', () => flipCard(card, index));
+                cardsGrid.appendChild(card);
+                cards.push(card);
+            });
+        }
+
+        function showPreview() {
+            previewArea.style.display = 'block';
+            previewCards.innerHTML = '';
+            
+            // Show unique teddies
+            const uniquePairs = [];
+            const seen = new Set();
+            
+            cards.forEach(card => {
+                const key = card.dataset.teddy + card.dataset.accessory;
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    uniquePairs.push({
+                        teddy: card.dataset.teddy,
+                        accessory: card.dataset.accessory
+                    });
+                }
+            });
+            
+            uniquePairs.forEach(pair => {
+                const preview = document.createElement('div');
+                preview.className = 'preview-card';
+                preview.innerHTML = `
+                    ${pair.teddy}
+                    <span class="preview-accessory">${pair.accessory}</span>
+                `;
+                previewCards.appendChild(preview);
+            });
+            
+            // Hide preview and start game after 4 seconds
+            setTimeout(() => {
+                previewArea.style.display = 'none';
+                startGameplay();
+            }, PREVIEW_TIME);
+        }
+
+        function startGameplay() {
+            gameActive = true;
+            canFlip = true;
+            
+            // Start countdown
+            countdownTimer = setInterval(updateTimer, 100);
+        }
+
+        function flipCard(card, index) {
+            if (!canFlip || !gameActive) return;
+            if (card.classList.contains('flipped') || card.classList.contains('matched')) return;
+            if (flippedCards.length >= 2) return;
+            
+            card.classList.add('flipped');
+            flippedCards.push({ card, index });
+            
+            if (flippedCards.length === 2) {
+                canFlip = false;
+                moves++;
+                updateMoves();
+                
+                setTimeout(checkMatch, 800);
+            }
+        }
+
+        function checkMatch() {
+            const [first, second] = flippedCards;
+            
+            if (first.card.dataset.id === second.card.dataset.id) {
+                // Match!
+                first.card.classList.add('matched');
+                second.card.classList.add('matched');
+                matchedPairs++;
+                streak++;
+                
+                updateScore();
+                updateStreak();
+                
+                if (streak >= 3) {
+                    showCombo();
+                }
+                
+                createParticles(first.card);
+                createParticles(second.card);
+                
+                if (matchedPairs >= PAIRS_TO_MATCH) {
+                    winGame();
+                }
+            } else {
+                // No match
+                setTimeout(() => {
+                    first.card.classList.remove('flipped');
+                    second.card.classList.remove('flipped');
+                }, 400);
+                
+                streak = 0;
+                updateStreak();
+            }
+            
+            flippedCards = [];
+            canFlip = true;
+        }
+
+        function showCombo() {
+            comboDisplay.textContent = `🔥 ${streak} STREAK! +${streak} bonus!`;
+            comboDisplay.classList.add('show');
+            setTimeout(() => comboDisplay.classList.remove('show'), 1500);
+        }
+
+        function createParticles(element) {
+            const rect = element.getBoundingClientRect();
+            const particles = ['✨', '💕', '⭐', '💖'];
+            
+            for (let i = 0; i < 6; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.innerHTML = particles[Math.floor(Math.random() * particles.length)];
+                particle.style.left = rect.left + rect.width / 2 + 'px';
+                particle.style.top = rect.top + rect.height / 2 + 'px';
+                
+                const angle = (Math.PI * 2 * i) / 6;
+                const distance = 40 + Math.random() * 40;
+                particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+                particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+                
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 3000);
+            }
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function updateScore() {
+            scoreDisplay.textContent = `${matchedPairs}/${PAIRS_TO_MATCH}`;
+        }
+
+        function updateMoves() {
+            movesDisplay.textContent = moves;
+        }
+
+        function updateStreak() {
+            streakDisplay.textContent = streak;
+            if (streak >= 3) {
+                streakDisplay.style.color = '#10b981';
+            } else {
+                streakDisplay.style.color = '#fff';
+            }
+        }
+
+        function updateTimer() {
+            gameTime -= 0.1;
+            const percentage = (gameTime / GAME_DURATION) * 100;
+            timerFill.style.width = percentage + '%';
+            
+            if (gameTime <= 0) {
+                gameOver();
+            }
+        }
+
+        function gameOver() {
+            gameActive = false;
+            canFlip = false;
+            clearInterval(countdownTimer);
+            
+            startBtn.disabled = false;
+            startBtn.textContent = 'Try Again 🎮';
+        }
+
+        function winGame() {
+            gameActive = false;
+            canFlip = false;
+            clearInterval(countdownTimer);
+            
+            // Save progress
+            localStorage.setItem('piece4', 'true');
+            localStorage.setItem('day4_completed', 'true');
+            
+            setTimeout(() => {
+                document.getElementById('winOverlay').classList.add('show');
+                initScratchCard();
+                createCelebration();
+            }, 800);
+            
+            updateProgress();
+        }
+
+        function initScratchCard() {
+            scratchCanvas = document.getElementById('scratchCanvas');
+            scratchCtx = scratchCanvas.getContext('2d');
+            
+            // Draw scratch-off coating
+            scratchCtx.fillStyle = '#ff69b4';
+            scratchCtx.fillRect(0, 0, 250, 250);
+            
+            // Add texture
+            scratchCtx.fillStyle = '#ff1493';
+            for (let i = 0; i < 100; i++) {
+                scratchCtx.fillRect(
+                    Math.random() * 250,
+                    Math.random() * 250,
+                    Math.random() * 3,
+                    Math.random() * 3
+                );
+            }
+            
+            // Add "Scratch here" text
+            scratchCtx.fillStyle = '#ffffff';
+            scratchCtx.font = 'bold 24px Georgia';
+            scratchCtx.textAlign = 'center';
+            scratchCtx.fillText('Scratch Here!', 125, 115);
+            scratchCtx.font = '20px Georgia';
+            scratchCtx.fillText('🧸', 125, 145);
+            
+            // Add scratch event listeners
+            scratchCanvas.addEventListener('mousedown', startScratch);
+            scratchCanvas.addEventListener('mousemove', scratch);
+            scratchCanvas.addEventListener('mouseup', stopScratch);
+            scratchCanvas.addEventListener('touchstart', startScratch);
+            scratchCanvas.addEventListener('touchmove', scratch);
+            scratchCanvas.addEventListener('touchend', stopScratch);
+        }
+
+        function startScratch(e) {
+            e.preventDefault();
+            isScratching = true;
+        }
+
+        function scratch(e) {
+            if (!isScratching) return;
+            e.preventDefault();
+            
+            const rect = scratchCanvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+            
+            scratchCtx.globalCompositeOperation = 'destination-out';
+            scratchCtx.beginPath();
+            scratchCtx.arc(x, y, 20, 0, Math.PI * 2);
+            scratchCtx.fill();
+            
+            checkScratchProgress();
+        }
+
+        function stopScratch() {
+            isScratching = false;
+        }
+
+        function checkScratchProgress() {
+            const imageData = scratchCtx.getImageData(0, 0, 250, 250);
+            let transparent = 0;
+            
+            for (let i = 3; i < imageData.data.length; i += 4) {
+                if (imageData.data[i] === 0) transparent++;
+            }
+            
+            scratchPercentage = (transparent / (250 * 250)) * 100;
+            
+            if (scratchPercentage > 60) {
+                revealImage();
+            }
+        }
+
+        function revealImage() {
+            // Remove scratch card
+            document.getElementById('scratchContainer').classList.add('hidden');
+            document.getElementById('scratchInstruction').classList.add('hidden');
+            
+            // Show piece reveal
+            const pieceReveal = document.getElementById('pieceReveal');
+            pieceReveal.style.display = 'block';
+            
+            // Show messages
+            document.getElementById('winMessage').style.display = 'block';
+            document.getElementById('pieceUnlocked').style.display = 'block';
+            document.getElementById('seeYou').style.display = 'block';
+            
+            // Transition to real image after 3 seconds
+            setTimeout(() => {
+                const cartoonImage = document.getElementById('cartoonImage');
+                const realImage = document.getElementById('realImage');
+                
+                cartoonImage.classList.add('hidden');
+                realImage.classList.remove('hidden');
+                realImage.classList.add('fade-in');
+            }, 3000);
+        }
+
+        function createCelebration() {
+            const interval = setInterval(() => {
+                for (let i = 0; i < 3; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'particle';
+                    confetti.innerHTML = ['🧸', '💕', '🎀', '✨'][Math.floor(Math.random() * 4)];
+                    confetti.style.left = Math.random() * window.innerWidth + 'px';
+                    confetti.style.top = '0px';
+                    confetti.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+                    confetti.style.setProperty('--ty', window.innerHeight + 'px');
+                    
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3000);
+                }
+            }, 150);
+            
+            setTimeout(() => clearInterval(interval), 5000);
+        }
+
+        function updateProgress() {
+            let count = 0;
+            for (let i = 1; i <= 6; i++) {
+                if (localStorage.getItem(`piece${i}`) === 'true') {
+                    count++;
+                }
+            }
+            document.getElementById('pieceCount').textContent = count;
+        }
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
